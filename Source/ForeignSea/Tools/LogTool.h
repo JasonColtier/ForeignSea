@@ -14,19 +14,19 @@ DECLARE_LOG_CATEGORY_EXTERN(FS_Log, Log, All);
 #define TRACE(Format, ...) \
 { \
 const FString Msg = FString::Printf(TEXT(Format), ##__VA_ARGS__); \
-UE_LOG(FS_Log, Log, TEXT("%s() : %s"), FUNC_NAME, *Msg);\
+UE_LOG(FS_Log, Log, TEXT("%s | %s() [%d] : %s"),*GetNameSafe(this),FUNC_NAME,__LINE__, *Msg);\
 }
 
 #define TRACE_WARNING(Format, ...) \
 { \
 const FString Msg = FString::Printf(TEXT(Format), ##__VA_ARGS__); \
-UE_LOG(FS_Log, Warning, TEXT("%s() : %s"), FUNC_NAME, *Msg);\
+UE_LOG(FS_Log, Warning, TEXT("%s | %s() [%d] : %s"),*GetNameSafe(this),FUNC_NAME,__LINE__, *Msg);\
 }
 
 #define TRACE_ERROR(Format, ...) \
 { \
 const FString Msg = FString::Printf(TEXT(Format), ##__VA_ARGS__); \
-UE_LOG(FS_Log, Error, TEXT("%s() : %s"), FUNC_NAME, *Msg);\
+UE_LOG(FS_Log, Error, TEXT("%s | %s() [%d] : %s"),*GetNameSafe(this),FUNC_NAME,__LINE__, *Msg);\
 }
 
 #define TRACE_SCREEN(Format, ...) \
