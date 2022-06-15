@@ -2,7 +2,7 @@
 
 
 #include "FS_MovementComponent.h"
-#include "../Tools/LogTool.h"
+#include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/Tools/LogTool.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values for this component's properties
