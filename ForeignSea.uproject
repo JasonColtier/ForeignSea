@@ -29,6 +29,10 @@
 				"Mac",
 				"Linux"
 			]
+		},
+		{
+			"Name": "JCO_UE5_Plugin",
+			"Enabled": true
 		}
 	]
 }

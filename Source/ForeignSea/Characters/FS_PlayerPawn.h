@@ -33,6 +33,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UFS_MovementComponent* MovementComponent;
+	
 
 protected:
 	// Called when the game starts or when spawned

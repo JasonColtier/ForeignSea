@@ -2,7 +2,7 @@
 
 
 #include "FS_MovementComponent.h"
-#include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/Tools/LogTool.h"
+#include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values for this component's properties
@@ -24,23 +24,48 @@ void UFS_MovementComponent::BeginPlay()
 }
 
 
+
 // Called every frame
 void UFS_MovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	MoveActor(DeltaTime);
+	RotateActor(DeltaTime);
+
+	
+}
+
+void UFS_MovementComponent::MoveActor(float DeltaTime)
+{
+	
+	/*
+	 * Déplacement du personnage
+	 */
+	
 	//on récupère le mouvement du pawn stocké à cette frame
 	const auto Movement = Pawn->ConsumeMovementInputVector();
 
 	//le classique * vitesse * deltatime
 	const FVector Displacement = Movement * MovementSpeed * DeltaTime;
 
+	AccumulatedDisplacement += Displacement;
+	
 	//on applique le déplacement
-	Pawn->SetActorLocation(Pawn->GetActorLocation() + Displacement, true);
+	Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement, true);
 
 	// if (Movement != FVector::ZeroVector)
 	// 	TRACE("movement %s", *Movement.ToString());
 
+}
+
+/*todo cette partie pourrait être dans le pawn et là on consume juste pour que les ennemis partagent ce mouvement comp ?
+ * ou on renomme ça en playerMovementComponent et on bind les inputs direct dedans
+ * ça veut dire oublier la partie consume movement input
+ */
+
+void UFS_MovementComponent::RotateActor(float DeltaTime)
+{
 	FVector MouseLoc;
 	FVector MouseDir;
 	
@@ -58,9 +83,13 @@ void UFS_MovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 		if(HitSuccess)
 		{
-			DrawDebugSphere(GetWorld(),HitResult.Location,10,15,FColor::Blue);
+
+			//todo faire en sorte que cette rotation soit constante 
+			
+			DrawDebugSphere(GetWorld(),HitResult.Location,30,15,FColor::Blue);
 			FRotator PawnRot = UKismetMathLibrary::FindLookAtRotation(Pawn->GetActorLocation(),HitResult.Location);
-			Pawn->SetActorRotation(FRotator(0,PawnRot.Yaw,0));
+			FRotator SmoothedRot = UKismetMathLibrary::RLerp(Pawn->GetActorRotation(),FRotator(0,PawnRot.Yaw,0),RotationSpeed*DeltaTime,true);
+			Pawn->SetActorRotation(SmoothedRot);
 		}else
 		{
 			TRACE_ERROR("mouse raycast did not hit !");
@@ -70,3 +99,4 @@ void UFS_MovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 		TRACE_ERROR("not able to point find mouse position !");
 	}
 }
+
