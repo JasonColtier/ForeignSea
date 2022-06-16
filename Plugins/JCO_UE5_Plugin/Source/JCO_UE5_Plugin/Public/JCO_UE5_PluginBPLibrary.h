@@ -5,6 +5,14 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "JCO_UE5_PluginBPLibrary.generated.h"
 
+UENUM()
+enum ELogEnum
+{
+	PI_Debug = 0,
+	PI_Warning = 1,
+	PI_Error = 2,
+};
+
 /* 
 *	Function library class.
 *	Each function in it is expected to be static and represents blueprint node that can be called in any blueprint.
@@ -29,4 +37,12 @@ class UJCO_UE5_PluginBPLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Execute Sample function", Keywords = "JCO_UE5_Plugin sample test testing"), Category = "JCO_UE5_PluginTesting")
 	static float JCO_UE5_PluginSampleFunction(float Param);
+
+	//un print custom qui rajoute la possibilité de print un warning ou une erreur depuis le BP et d'utiliser 2 strings qui seront concaténées
+	UFUNCTION(BlueprintCallable, meta=(WorldContext="WorldContextObject", CallableWithoutWorldContext, Keywords = "log print", AdvancedDisplay = "2", DevelopmentOnly), Category="Utilities|String")
+	static void JCO_Print(const UObject* WorldContextObject, FString String1, FString String2, ELogEnum LogCategory, bool bPrintToScreen = true, bool bPrintToLog = true, FLinearColor TextColor = FLinearColor(0.0, 0.66, 1.0), float Duration = 2.f);
+
+	UFUNCTION(BlueprintPure, Category = "Low Entry|Extended Standard Library|Utilities|Build", Meta = (DisplayName = "With Editor", Keywords = "compile export mode version type build platform in inside using"))
+	static bool WithEditor();
+
 };
