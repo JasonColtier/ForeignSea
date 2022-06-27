@@ -16,16 +16,7 @@ public:
 	// Sets default values for this component's properties
 	UFS_MovementComponent();
 
-	UPROPERTY(EditAnywhere)
-	float MovementSpeed = 1000.0f;
-
-	//max movement speed
-	//acceleration
-	//drag
 	
-
-	UPROPERTY(EditAnywhere)
-	float RotationSpeed = 1.0f;
 
 protected:
 	// Called when the game starts
@@ -41,6 +32,23 @@ private:
 	UPROPERTY()
 	FVector AccumulatedDisplacement;
 
+	UPROPERTY(EditAnywhere)
+	float Acceleration = 1000.0f;
+
+	//max movement speed
+	UPROPERTY(EditAnywhere)
+	float MaxMoveSpeed = 10.f;
+	
+
+	/**
+	 * @brief chaque frame on retire X % de la vitesse
+	 */
+	UPROPERTY(EditAnywhere)
+	float Drag = 0.95f;
+
+	UPROPERTY(EditAnywhere)
+	float RotationSpeed = 1.0f;
+	
 	/**
 	 * @brief Déplace le pawn
 	 * @param DeltaTime 

@@ -46,16 +46,24 @@ void UFS_MovementComponent::MoveActor(float DeltaTime)
 	//on récupère le mouvement du pawn stocké à cette frame
 	const auto Movement = Pawn->ConsumeMovementInputVector();
 
-	//le classique * vitesse * deltatime
-	const FVector Displacement = Movement * MovementSpeed * DeltaTime;
+	if(Movement != FVector::Zero())
+	{
+		//le classique * vitesse * deltatime
+		const FVector Displacement = Movement * Acceleration * DeltaTime;
 
-	AccumulatedDisplacement += Displacement;
+		AccumulatedDisplacement += Displacement;
 	
-	//on applique le déplacement
-	Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement, true);
+		AccumulatedDisplacement = AccumulatedDisplacement.GetClampedToSize(0,MaxMoveSpeed);
+	
+		//on applique le déplacement
+		Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement, true);
 
-	// if (Movement != FVector::ZeroVector)
-	// 	TRACE("movement %s", *Movement.ToString());
+	
+		// if (Movement != FVector::ZeroVector)
+		// 	TRACE("movement %s", *Movement.ToString());
+	}
+	
+	AccumulatedDisplacement /= Drag * DeltaTime;
 
 }
 
