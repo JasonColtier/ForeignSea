@@ -36,12 +36,12 @@ if (Msg == "") \
 { \
 TCHAR StdMsg[MAX_SPRINTF] = TEXT(""); \
 FCString::Sprintf(StdMsg, TEXT("%s() : %s"), FUNC_NAME, *GetNameSafe(this)); \
-GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::White, StdMsg); \
+GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::White, StdMsg); \
 UE_LOG(LogTemp, Warning, TEXT("%s() : %s"), FUNC_NAME, *Msg);\
 } \
 else \
 { \
-GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::White, Msg); \
+GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::White, Msg); \
 UE_LOG(FS_Log, Warning, TEXT("%s() : %s"), FUNC_NAME, *Msg);\
 } \
 }

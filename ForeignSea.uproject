@@ -33,6 +33,24 @@
 		{
 			"Name": "JCO_UE5_Plugin",
 			"Enabled": true
+		},
+		{
+			"Name": "CLionSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "CodeLiteSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "XCodeSourceCodeAccess",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Mac"
+			]
 		}
+	],
+	"TargetPlatforms": [
+		"Windows"
 	]
 }

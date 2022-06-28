@@ -18,11 +18,10 @@ UFS_MovementComponent::UFS_MovementComponent()
 void UFS_MovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	Pawn = Cast<APawn>(GetOwner());
 	Controller = Cast<APlayerController>(Pawn->GetController());
 }
-
 
 
 // Called every frame
@@ -32,39 +31,39 @@ void UFS_MovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 	MoveActor(DeltaTime);
 	RotateActor(DeltaTime);
-
-	
 }
 
 void UFS_MovementComponent::MoveActor(float DeltaTime)
 {
-	
 	/*
 	 * Déplacement du personnage
 	 */
-	
-	//on récupère le mouvement du pawn stocké à cette frame
-	const auto Movement = Pawn->ConsumeMovementInputVector();
 
-	if(Movement != FVector::Zero())
+	//on récupère le mouvement du pawn stocké à cette frame
+	const auto Direction = Pawn->ConsumeMovementInputVector();
+
+	TRACE_SCREEN("DeltaTime %f", DeltaTime);
+
+	
+	if (Direction != FVector::Zero())
 	{
 		//le classique * vitesse * deltatime
-		const FVector Displacement = Movement * Acceleration * DeltaTime;
+		const FVector Displacement = Direction * Acceleration * DeltaTime;
 
 		AccumulatedDisplacement += Displacement;
-	
-		AccumulatedDisplacement = AccumulatedDisplacement.GetClampedToSize(0,MaxMoveSpeed);
-	
-		//on applique le déplacement
-		Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement, true);
+		TRACE_SCREEN("AccumulatedDisplacement %s", *AccumulatedDisplacement.ToString());
 
-	
-		// if (Movement != FVector::ZeroVector)
-		// 	TRACE("movement %s", *Movement.ToString());
+		AccumulatedDisplacement = AccumulatedDisplacement.GetClampedToSize(0, MaxMoveSpeed*DeltaTime);
 	}
-	
-	AccumulatedDisplacement /= Drag * DeltaTime;
 
+	Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement, true);
+	
+	float SlowDisplacement = 1 - (DeltaTime + Drag);
+	TRACE_SCREEN("SlowDisplacement %f", SlowDisplacement);
+	
+	SlowDisplacement = UKismetMathLibrary::FClamp(SlowDisplacement, 0.f, 1.f);
+	
+	AccumulatedDisplacement *= SlowDisplacement;
 }
 
 /*todo cette partie pourrait être dans le pawn et là on consume juste pour que les ennemis partagent ce mouvement comp ?
@@ -76,35 +75,35 @@ void UFS_MovementComponent::RotateActor(float DeltaTime)
 {
 	FVector MouseLoc;
 	FVector MouseDir;
-	
-	if(Controller->DeprojectMousePositionToWorld(MouseLoc,MouseDir))
+
+	if (Controller->DeprojectMousePositionToWorld(MouseLoc, MouseDir))
 	{
 		FHitResult HitResult;
 		FCollisionQueryParams RV_TraceParams = FCollisionQueryParams();
 		bool HitSuccess = GetWorld()->LineTraceSingleByChannel(
-			HitResult,		//result
-			MouseLoc,		//start
-			MouseLoc + MouseDir*5000,		//end
-			ECC_Pawn,	//collision channel
+			HitResult, //result
+			MouseLoc, //start
+			MouseLoc + MouseDir * 5000, //end
+			ECC_Pawn, //collision channel
 			RV_TraceParams
-			);
+		);
 
-		if(HitSuccess)
+		if (HitSuccess)
 		{
-
 			//todo faire en sorte que cette rotation soit constante 
-			
-			DrawDebugSphere(GetWorld(),HitResult.Location,30,15,FColor::Blue);
-			FRotator PawnRot = UKismetMathLibrary::FindLookAtRotation(Pawn->GetActorLocation(),HitResult.Location);
-			FRotator SmoothedRot = UKismetMathLibrary::RLerp(Pawn->GetActorRotation(),FRotator(0,PawnRot.Yaw,0),RotationSpeed*DeltaTime,true);
+
+			DrawDebugSphere(GetWorld(), HitResult.Location, 30, 15, FColor::Blue);
+			FRotator PawnRot = UKismetMathLibrary::FindLookAtRotation(Pawn->GetActorLocation(), HitResult.Location);
+			FRotator SmoothedRot = UKismetMathLibrary::RLerp(Pawn->GetActorRotation(), FRotator(0, PawnRot.Yaw, 0), RotationSpeed * DeltaTime, true);
 			Pawn->SetActorRotation(SmoothedRot);
-		}else
+		}
+		else
 		{
 			TRACE_ERROR("mouse raycast did not hit !");
 		}
-	}else
+	}
+	else
 	{
 		TRACE_ERROR("not able to point find mouse position !");
 	}
 }
-
