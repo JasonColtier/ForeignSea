@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "ForeignSea/Core/FS_PawnMovementComponent.h"
+#include "ForeignSea/Core/FS_ShootingComponent.h"
 #include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -24,6 +25,7 @@ AFS_PlayerPawn::AFS_PlayerPawn()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MESH"));
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"));
 	MovementComponent = CreateDefaultSubobject<UFS_PawnMovementComponent>(TEXT("Pawn Movement Component"));
+	ShootingComponent = CreateDefaultSubobject<UFS_ShootingComponent>(TEXT("Shooting Component"));
 	
 	//Le mesh en tant que root
 	RootComponent = Mesh;
@@ -55,6 +57,8 @@ void AFS_PlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("MoveForward",this,&AFS_PlayerPawn::MoveForward);
+	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&AFS_PlayerPawn::Fire);
+
 }
 
 void AFS_PlayerPawn::MoveForward(float Value)
@@ -64,6 +68,10 @@ void AFS_PlayerPawn::MoveForward(float Value)
 		//on ajoute le mouvement 
 		AddMovementInput(GetActorForwardVector(),Value,true);
 	}
+}
 
+void AFS_PlayerPawn::Fire()
+{
+	ShootingComponent->Fire();
 }
 

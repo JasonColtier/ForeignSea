@@ -7,6 +7,7 @@
 #include "FS_PlayerPawn.generated.h"
 
 class UFS_PawnMovementComponent;
+class UFS_ShootingComponent;
 class UCapsuleComponent;
 class UCameraComponent;
 class USpringArmComponent;
@@ -18,6 +19,13 @@ class FOREIGNSEA_API AFS_PlayerPawn : public APawn
 public:
 	// Sets default values for this pawn's properties
 	AFS_PlayerPawn();
+
+	
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+private:
 
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArmComponent;
@@ -34,14 +42,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	UFS_PawnMovementComponent* MovementComponent;
 	
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-private:
+	UPROPERTY(EditAnywhere)
+	UFS_ShootingComponent* ShootingComponent;
+	
 	UFUNCTION()
 	void MoveForward(float Value);
+
+	UFUNCTION()
+	void Fire();
 
 public:
 	// Called every frame

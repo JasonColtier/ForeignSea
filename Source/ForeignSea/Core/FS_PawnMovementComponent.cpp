@@ -44,29 +44,29 @@ void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 	
 	if (Direction != FVector::Zero())
 	{
-		//le classique * vitesse * deltatime
+		//le classique Direction * vitesse * deltatime
 		const FVector Displacement = Direction * Acceleration * DeltaTime;
 
+		//on accumule la vitesse dans le temps
 		AccumulatedDisplacement += Displacement;
-		// TRACE_SCREEN("AccumulatedDisplacement %s", *AccumulatedDisplacement.ToString());
 
+		//on clamp cette vitesse à la vitesse max (multipliée aussi par le deltatime !)
 		AccumulatedDisplacement = AccumulatedDisplacement.GetClampedToSize(0, MaxMoveSpeed*DeltaTime);
 	}
 
+	//on set la position du pawn
 	Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement, true);
-	
+
+	//le slow correspond à a résistance qui sera appliquéee
 	float SlowDisplacement = 1 - (DeltaTime + Drag);
-	// TRACE_SCREEN("SlowDisplacement %f", SlowDisplacement);
-	
+
+	//clamp de la valeur entre 0 et 1 pour en faire un coéficient
 	SlowDisplacement = UKismetMathLibrary::FClamp(SlowDisplacement, 0.f, 1.f);
-	
+
+	//réduction de la vitesse grâce à ce coéficient inférieur à 1
 	AccumulatedDisplacement *= SlowDisplacement;
 }
 
-/*todo cette partie pourrait être dans le pawn et là on consume juste pour que les ennemis partagent ce mouvement comp ?
- * ou on renomme ça en playerMovementComponent et on bind les inputs direct dedans
- * ça veut dire oublier la partie consume movement input
- */
 
 void UFS_PawnMovementComponent::RotateActor(float DeltaTime)
 {
@@ -87,8 +87,6 @@ void UFS_PawnMovementComponent::RotateActor(float DeltaTime)
 
 		if (HitSuccess)
 		{
-			//todo faire en sorte que cette rotation soit constante 
-
 			DrawDebugSphere(GetWorld(), HitResult.Location, 30, 15, FColor::Blue);
 			FRotator PawnRot = UKismetMathLibrary::FindLookAtRotation(Pawn->GetActorLocation(), HitResult.Location);
 			FRotator SmoothedRot = UKismetMathLibrary::RLerp(Pawn->GetActorRotation(), FRotator(0, PawnRot.Yaw, 0), RotationSpeed * DeltaTime, true);

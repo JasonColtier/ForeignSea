@@ -29,13 +29,22 @@ private:
 	UPROPERTY()
 	APlayerController* Controller;
 
+	/**
+	 * @brief permet de conserver la vitesse de déplacement dans le temps
+	 */
 	UPROPERTY()
 	FVector AccumulatedDisplacement;
 
+	/**
+	 * @brief Acceleration du pawn
+	 */
 	UPROPERTY(EditAnywhere)
 	float Acceleration = 50.0f;
 
-	//max movement speed
+
+	/**
+	 * @brief Vitesse de mouvement maximum
+	 */
 	UPROPERTY(EditAnywhere)
 	float MaxMoveSpeed = 1000.f;
 	
@@ -46,6 +55,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	float Drag = 0.005f;
 
+	/**
+	 * @brief Vitesse de rotation
+	 */
 	UPROPERTY(EditAnywhere)
 	float RotationSpeed = 1.0f;
 	
