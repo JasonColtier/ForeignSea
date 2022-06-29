@@ -5,7 +5,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "ForeignSea/Core/FS_MovementComponent.h"
+#include "ForeignSea/Core/FS_PawnMovementComponent.h"
 #include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -23,7 +23,7 @@ AFS_PlayerPawn::AFS_PlayerPawn()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MESH"));
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"));
-	MovementComponent = CreateDefaultSubobject<UFS_MovementComponent>(TEXT("Movement Component"));
+	MovementComponent = CreateDefaultSubobject<UFS_PawnMovementComponent>(TEXT("Pawn Movement Component"));
 	
 	//Le mesh en tant que root
 	RootComponent = Mesh;

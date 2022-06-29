@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FS_MovementComponent.h"
+#include "FS_PawnMovementComponent.h"
 #include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values for this component's properties
-UFS_MovementComponent::UFS_MovementComponent()
+UFS_PawnMovementComponent::UFS_PawnMovementComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -15,7 +15,7 @@ UFS_MovementComponent::UFS_MovementComponent()
 
 
 // Called when the game starts
-void UFS_MovementComponent::BeginPlay()
+void UFS_PawnMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -25,7 +25,7 @@ void UFS_MovementComponent::BeginPlay()
 
 
 // Called every frame
-void UFS_MovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UFS_PawnMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -33,7 +33,7 @@ void UFS_MovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	RotateActor(DeltaTime);
 }
 
-void UFS_MovementComponent::MoveActor(float DeltaTime)
+void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 {
 	/*
 	 * Déplacement du personnage
@@ -41,9 +41,6 @@ void UFS_MovementComponent::MoveActor(float DeltaTime)
 
 	//on récupère le mouvement du pawn stocké à cette frame
 	const auto Direction = Pawn->ConsumeMovementInputVector();
-
-	TRACE_SCREEN("DeltaTime %f", DeltaTime);
-
 	
 	if (Direction != FVector::Zero())
 	{
@@ -51,7 +48,7 @@ void UFS_MovementComponent::MoveActor(float DeltaTime)
 		const FVector Displacement = Direction * Acceleration * DeltaTime;
 
 		AccumulatedDisplacement += Displacement;
-		TRACE_SCREEN("AccumulatedDisplacement %s", *AccumulatedDisplacement.ToString());
+		// TRACE_SCREEN("AccumulatedDisplacement %s", *AccumulatedDisplacement.ToString());
 
 		AccumulatedDisplacement = AccumulatedDisplacement.GetClampedToSize(0, MaxMoveSpeed*DeltaTime);
 	}
@@ -59,7 +56,7 @@ void UFS_MovementComponent::MoveActor(float DeltaTime)
 	Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement, true);
 	
 	float SlowDisplacement = 1 - (DeltaTime + Drag);
-	TRACE_SCREEN("SlowDisplacement %f", SlowDisplacement);
+	// TRACE_SCREEN("SlowDisplacement %f", SlowDisplacement);
 	
 	SlowDisplacement = UKismetMathLibrary::FClamp(SlowDisplacement, 0.f, 1.f);
 	
@@ -71,7 +68,7 @@ void UFS_MovementComponent::MoveActor(float DeltaTime)
  * ça veut dire oublier la partie consume movement input
  */
 
-void UFS_MovementComponent::RotateActor(float DeltaTime)
+void UFS_PawnMovementComponent::RotateActor(float DeltaTime)
 {
 	FVector MouseLoc;
 	FVector MouseDir;

@@ -6,7 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "FS_PlayerPawn.generated.h"
 
-class UFS_MovementComponent;
+class UFS_PawnMovementComponent;
 class UCapsuleComponent;
 class UCameraComponent;
 class USpringArmComponent;
@@ -32,7 +32,7 @@ public:
 	UCapsuleComponent* CapsuleComponent;
 
 	UPROPERTY(EditAnywhere)
-	UFS_MovementComponent* MovementComponent;
+	UFS_PawnMovementComponent* MovementComponent;
 	
 
 protected:

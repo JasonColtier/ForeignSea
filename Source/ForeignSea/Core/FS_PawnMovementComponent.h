@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "FS_MovementComponent.generated.h"
+#include "FS_PawnMovementComponent.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class FOREIGNSEA_API UFS_MovementComponent : public UActorComponent
+class FOREIGNSEA_API UFS_PawnMovementComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this component's properties
-	UFS_MovementComponent();
+	UFS_PawnMovementComponent();
 
 	
 
@@ -33,18 +33,18 @@ private:
 	FVector AccumulatedDisplacement;
 
 	UPROPERTY(EditAnywhere)
-	float Acceleration = 1000.0f;
+	float Acceleration = 50.0f;
 
 	//max movement speed
 	UPROPERTY(EditAnywhere)
-	float MaxMoveSpeed = 10.f;
+	float MaxMoveSpeed = 1000.f;
 	
 
 	/**
 	 * @brief chaque frame on retire X % de la vitesse
 	 */
 	UPROPERTY(EditAnywhere)
-	float Drag = 0.95f;
+	float Drag = 0.005f;
 
 	UPROPERTY(EditAnywhere)
 	float RotationSpeed = 1.0f;
