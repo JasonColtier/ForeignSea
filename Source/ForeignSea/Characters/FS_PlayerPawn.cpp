@@ -33,6 +33,7 @@ AFS_PlayerPawn::AFS_PlayerPawn()
 	//Attachement des components
 	SpringArmComponent->SetupAttachment(RootComponent);
 	CapsuleComponent->SetupAttachment(RootComponent);
+	ShootingComponent->SetupAttachment(RootComponent);
 	CameraComponent->SetupAttachment(SpringArmComponent);
 	
 }

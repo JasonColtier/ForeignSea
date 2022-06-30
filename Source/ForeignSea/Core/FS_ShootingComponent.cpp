@@ -2,6 +2,8 @@
 
 
 #include "FS_ShootingComponent.h"
+
+#include "FS_Projectile.h"
 #include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
 
 
@@ -18,6 +20,7 @@ UFS_ShootingComponent::UFS_ShootingComponent()
 void UFS_ShootingComponent::Fire()
 {
 	TRACE_SCREEN("Fire !");
+	SpawnProjectile();
 }
 
 
@@ -27,9 +30,17 @@ void UFS_ShootingComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
+
+void UFS_ShootingComponent::SpawnProjectile()
+{
+	// check(ShootingPoint);
+
+	auto* Projectile = GetWorld()->SpawnActor<AFS_Projectile>(ProjectyleClass,GetComponentLocation(), GetComponentRotation());
+
+	
+}
 
 // Called every frame
 void UFS_ShootingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -38,4 +49,3 @@ void UFS_ShootingComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 	// ...
 }
-
