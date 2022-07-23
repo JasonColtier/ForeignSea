@@ -3,6 +3,7 @@
 
 #include "FS_PawnMovementComponent.h"
 #include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
+#include "ForeignSea/Characters/FS_GenericPawn.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values for this component's properties
@@ -19,7 +20,7 @@ void UFS_PawnMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Pawn = Cast<APawn>(GetOwner());
+	Pawn = Cast<AFS_GenericPawn>(GetOwner());
 	Controller = Cast<APlayerController>(Pawn->GetController());
 }
 
@@ -56,7 +57,8 @@ void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 
 	//on set la position du pawn
 	Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement, true);
-
+	
+	
 	//le slow correspond à a résistance qui sera appliquéee
 	float SlowDisplacement = 1 - (DeltaTime + Drag);
 
@@ -70,35 +72,8 @@ void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 
 void UFS_PawnMovementComponent::RotateActor(float DeltaTime)
 {
-	FVector MouseLoc;
-	FVector MouseDir;
-
-	if (Controller->DeprojectMousePositionToWorld(MouseLoc, MouseDir))
-	{
-		FHitResult HitResult;
-		FCollisionQueryParams RV_TraceParams = FCollisionQueryParams();
-		bool HitSuccess = GetWorld()->LineTraceSingleByChannel(
-			HitResult, //result
-			MouseLoc, //start
-			MouseLoc + MouseDir * 5000, //end
-			ECC_Pawn, //collision channel
-			RV_TraceParams
-		);
-
-		if (HitSuccess)
-		{
-			DrawDebugSphere(GetWorld(), HitResult.Location, 30, 15, FColor::Blue);
-			FRotator PawnRot = UKismetMathLibrary::FindLookAtRotation(Pawn->GetActorLocation(), HitResult.Location);
-			FRotator SmoothedRot = UKismetMathLibrary::RLerp(Pawn->GetActorRotation(), FRotator(0, PawnRot.Yaw, 0), RotationSpeed * DeltaTime, true);
-			Pawn->SetActorRotation(SmoothedRot);
-		}
-		else
-		{
-			TRACE_ERROR("mouse raycast did not hit !");
-		}
-	}
-	else
-	{
-		TRACE_ERROR("not able to point find mouse position !");
-	}
+	DrawDebugSphere(GetWorld(), Pawn->LocationToRotateToward, 30, 15, FColor::Blue);
+	FRotator PawnRot = UKismetMathLibrary::FindLookAtRotation(Pawn->GetActorLocation(), Pawn->LocationToRotateToward);
+	FRotator SmoothedRot = UKismetMathLibrary::RLerp(Pawn->GetActorRotation(), FRotator(0, PawnRot.Yaw, 0), RotationSpeed * DeltaTime, true);
+	Pawn->SetActorRotation(SmoothedRot);
 }

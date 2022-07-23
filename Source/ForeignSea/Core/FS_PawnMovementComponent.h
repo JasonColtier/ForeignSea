@@ -7,6 +7,7 @@
 #include "FS_PawnMovementComponent.generated.h"
 
 
+class AFS_GenericPawn;
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class FOREIGNSEA_API UFS_PawnMovementComponent : public UActorComponent
 {
@@ -24,7 +25,7 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere)
-	APawn* Pawn;
+	AFS_GenericPawn* Pawn;
 
 	UPROPERTY()
 	APlayerController* Controller;

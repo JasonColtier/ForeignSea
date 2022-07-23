@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FS_GenericPawn.h"
 #include "GameFramework/Pawn.h"
 #include "FS_PlayerPawn.generated.h"
 
@@ -12,7 +13,7 @@ class UCapsuleComponent;
 class UCameraComponent;
 class USpringArmComponent;
 UCLASS()
-class FOREIGNSEA_API AFS_PlayerPawn : public APawn
+class FOREIGNSEA_API AFS_PlayerPawn : public AFS_GenericPawn
 {
 	GENERATED_BODY()
 
@@ -20,36 +21,26 @@ public:
 	// Sets default values for this pawn's properties
 	AFS_PlayerPawn();
 
-	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArmComponent;
 
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* CameraComponent;
-
-	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* Mesh;
-
-	UPROPERTY(EditAnywhere)
-	UCapsuleComponent* CapsuleComponent;
-
-	UPROPERTY(EditAnywhere)
-	UFS_PawnMovementComponent* MovementComponent;
 	
-	UPROPERTY(EditAnywhere)
-	UFS_ShootingComponent* ShootingComponent;
+	UPROPERTY()
+	APlayerController* PlayerController;
 	
 	UFUNCTION()
 	void MoveForward(float Value);
 
+	//On calcule la location worldspace de la souris sur l'écran et on set la valeur LocationToRotateToward
 	UFUNCTION()
-	void Fire();
+	void CalculateTargetRotation();
 
 public:
 	// Called every frame
@@ -57,4 +48,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	//quand on est possessed
+	virtual void PossessedBy(AController* NewController) override;
 };

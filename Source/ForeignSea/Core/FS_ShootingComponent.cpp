@@ -5,6 +5,7 @@
 
 #include "FS_Projectile.h"
 #include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
+#include "ForeignSea/Characters/FS_GenericPawn.h"
 
 
 // Sets default values for this component's properties
@@ -17,29 +18,43 @@ UFS_ShootingComponent::UFS_ShootingComponent()
 	// ...
 }
 
-void UFS_ShootingComponent::Fire()
-{
-	TRACE_SCREEN("Fire !");
-	SpawnProjectile();
-}
-
 
 // Called when the game starts
 void UFS_ShootingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	Pawn = Cast<AFS_GenericPawn>(GetOwner());
+}
+
+void UFS_ShootingComponent::StartFiring()
+{
+	PlayerWantToShoot = true;
+	TRACE_SCREEN("player want to shoot !");
+	TRACE("shoot !");
+}
+
+void UFS_ShootingComponent::StopFiring()
+{
+	PlayerWantToShoot = false;
+	TRACE_SCREEN("stop shooting !");
+	TRACE("stop shoot !");
 }
 
 
 void UFS_ShootingComponent::SpawnProjectile()
 {
-	// check(ShootingPoint);
+	//todo Faire un actor component avec un ou plusieurs shoot point ?
+	//check(ShootingPoint);
 
-	auto* Projectile = GetWorld()->SpawnActor<AFS_Projectile>(ProjectyleClass,GetComponentLocation(), GetComponentRotation());
-
-	
+	// auto* Projectile = GetWorld()->SpawnActor<AFS_Projectile>(ProjectyleClass,GetComponentLocation(), GetComponentRotation());
+	FTransform SpawnTransform; //création d'un transform
+	SpawnTransform.SetLocation(GetComponentLocation());
+	SpawnTransform.SetRotation(GetComponentRotation().Quaternion());
+	//on commence le spawning
+	auto* Projectile = GetWorld()->SpawnActorDeferred<AFS_Projectile>(ProjectyleClass, SpawnTransform);
+	Projectile->ShootingPawn = Pawn; //ça nous laisse le temps de set cette variable
+	Projectile->FinishSpawning(SpawnTransform); //on finalise le spawn
 }
 
 // Called every frame
@@ -47,5 +62,20 @@ void UFS_ShootingComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	//pour le délai entre les tirs
+	TimerShootDelay += DeltaTime;
+
+	//si on est en dessous du timer on peut tirer
+	if (CanShoot && PlayerWantToShoot)
+	{
+		SpawnProjectile();
+		CanShoot = false;
+		TimerShootDelay = 0; //permet de ne pas avoir un écart plus court entre la 1ere et 2eme bullet 
+	}
+	
+	if (TimerShootDelay > ShootingSpeed) //il faut attrendre le rechargement
+	{
+		CanShoot = true;
+		TimerShootDelay = 0;
+	}
 }

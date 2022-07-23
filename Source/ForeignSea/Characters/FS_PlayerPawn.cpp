@@ -8,7 +8,9 @@
 #include "ForeignSea/Core/FS_PawnMovementComponent.h"
 #include "ForeignSea/Core/FS_ShootingComponent.h"
 #include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
+#include "ForeignSea/Core/FS_LifeComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 DEFINE_LOG_CATEGORY(FS_Log);
 
@@ -22,18 +24,10 @@ AFS_PlayerPawn::AFS_PlayerPawn()
 	//Création des components
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MESH"));
-	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"));
-	MovementComponent = CreateDefaultSubobject<UFS_PawnMovementComponent>(TEXT("Pawn Movement Component"));
-	ShootingComponent = CreateDefaultSubobject<UFS_ShootingComponent>(TEXT("Shooting Component"));
 	
-	//Le mesh en tant que root
-	RootComponent = Mesh;
 
-	//Attachement des components
+	//Attachement des scene components
 	SpringArmComponent->SetupAttachment(RootComponent);
-	CapsuleComponent->SetupAttachment(RootComponent);
-	ShootingComponent->SetupAttachment(RootComponent);
 	CameraComponent->SetupAttachment(SpringArmComponent);
 	
 }
@@ -43,13 +37,13 @@ AFS_PlayerPawn::AFS_PlayerPawn()
 void AFS_PlayerPawn::BeginPlay()
 {
 	Super::BeginPlay(); 
-	 
 }
 
 // Called every frame
 void AFS_PlayerPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	CalculateTargetRotation();
 }
 
 // Called to bind functionality to input
@@ -58,8 +52,16 @@ void AFS_PlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("MoveForward",this,&AFS_PlayerPawn::MoveForward);
-	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&AFS_PlayerPawn::Fire);
+	PlayerInputComponent->BindAction("Fire",IE_Pressed,ShootingComponent,&UFS_ShootingComponent::StartFiring);
+	PlayerInputComponent->BindAction("Fire",IE_Released,ShootingComponent,&UFS_ShootingComponent::StopFiring);
 
+}
+
+void AFS_PlayerPawn::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	PlayerController = Cast<APlayerController>(NewController);
 }
 
 void AFS_PlayerPawn::MoveForward(float Value)
@@ -71,8 +73,36 @@ void AFS_PlayerPawn::MoveForward(float Value)
 	}
 }
 
-void AFS_PlayerPawn::Fire()
+void AFS_PlayerPawn::CalculateTargetRotation()
 {
-	ShootingComponent->Fire();
+	FVector MouseLoc;
+	FVector MouseDir;
+
+	if (PlayerController->DeprojectMousePositionToWorld(MouseLoc, MouseDir))
+	{
+		FHitResult HitResult;
+		FCollisionQueryParams RV_TraceParams = FCollisionQueryParams();
+		bool HitSuccess = GetWorld()->LineTraceSingleByChannel(
+			HitResult, //result
+			MouseLoc, //start
+			MouseLoc + MouseDir * 5000, //end
+			ECC_Pawn, //collision channel
+			RV_TraceParams
+		);
+
+		if (HitSuccess)
+		{
+			LocationToRotateToward = HitResult.Location;
+		}
+		else
+		{
+			TRACE_ERROR("mouse raycast did not hit !");
+		}
+	}
+	else
+	{
+		TRACE_ERROR("not able to point find mouse position !");
+	}
 }
+
 
