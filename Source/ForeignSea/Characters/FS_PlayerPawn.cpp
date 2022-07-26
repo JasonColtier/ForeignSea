@@ -5,10 +5,8 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "ForeignSea/Core/FS_PawnMovementComponent.h"
 #include "ForeignSea/Core/FS_ShootingComponent.h"
 #include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
-#include "ForeignSea/Core/FS_LifeComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -75,6 +73,10 @@ void AFS_PlayerPawn::MoveForward(float Value)
 
 void AFS_PlayerPawn::CalculateTargetRotation()
 {
+
+	if(!PlayerController)
+		return;
+	
 	FVector MouseLoc;
 	FVector MouseDir;
 
