@@ -29,20 +29,20 @@ const FString Msg = FString::Printf(TEXT(Format), ##__VA_ARGS__); \
 UE_LOG(FS_Log, Error, TEXT("%s | %s() [%d] : %s"),*GetNameSafe(this),FUNC_NAME,__LINE__, *Msg);\
 }
 
-#define TRACE_SCREEN(Format, ...) \
+#define TRACE_SCREEN(time,Format, ...) \
 { \
 const FString Msg = FString::Printf(TEXT(Format), ##__VA_ARGS__); \
 if (Msg == "") \
 { \
 TCHAR StdMsg[MAX_SPRINTF] = TEXT(""); \
 FCString::Sprintf(StdMsg, TEXT("%s() : %s"), FUNC_NAME, *GetNameSafe(this)); \
-GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::White, StdMsg); \
-UE_LOG(LogTemp, Warning, TEXT("%s() : %s"), FUNC_NAME, *Msg);\
+GEngine->AddOnScreenDebugMessage(-1, time, FColor::White, StdMsg); \
+UE_LOG(FS_Log, Log, TEXT("%s | %s() [%d] : %s"),*GetNameSafe(this),FUNC_NAME,__LINE__, *Msg);\
 } \
 else \
 { \
-GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::White, Msg); \
-UE_LOG(FS_Log, Warning, TEXT("%s() : %s"), FUNC_NAME, *Msg);\
+GEngine->AddOnScreenDebugMessage(-1, time, FColor::White, Msg); \
+UE_LOG(FS_Log, Log, TEXT("%s | %s() [%d] : %s"),*GetNameSafe(this),FUNC_NAME,__LINE__, *Msg);\
 } \
 }
 

@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "SF_AIController.generated.h"
 
+class UBehaviorTreeComponent;
 /**
  * 
  */
@@ -21,6 +22,9 @@ private:
 	UPROPERTY()
 	UBlackboardComponent* BlackboardComponent;
 
+	UPROPERTY()
+	UBehaviorTreeComponent* BehaviorTreeComponent;
+	
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* BehaviorTree;
 

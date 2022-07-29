@@ -22,7 +22,7 @@ AFS_EnemyPawn* AEntitySpawner::SpawnEnemyAroundPlayer()
 	float randomAngle = FMath::RandRange(0.f,2 * PI);
 	float x = SpawnRadius * FMath::Sin(randomAngle);
 	float y = SpawnRadius * FMath::Cos(randomAngle);
-	FVector location = FVector(x,y,100);
+	FVector location = FVector(x,y,20);
 	location += PlayerPawn->GetActorLocation();
 
 	DrawDebugSphere(GetWorld(),location,10,10,FColor::Red,true);

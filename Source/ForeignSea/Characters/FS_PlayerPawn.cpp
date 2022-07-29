@@ -10,9 +10,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
-DEFINE_LOG_CATEGORY(FS_Log);
-
-
 // Sets default values
 AFS_PlayerPawn::AFS_PlayerPawn()
 {
@@ -103,7 +100,7 @@ void AFS_PlayerPawn::CalculateTargetRotation()
 	}
 	else
 	{
-		TRACE_ERROR("not able to point find mouse position !");
+		// TRACE_ERROR("not able to point find mouse position !");
 	}
 }
 

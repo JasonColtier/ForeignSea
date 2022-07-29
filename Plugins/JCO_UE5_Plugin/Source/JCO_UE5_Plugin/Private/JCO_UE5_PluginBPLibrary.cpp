@@ -10,11 +10,6 @@ UJCO_UE5_PluginBPLibrary::UJCO_UE5_PluginBPLibrary(const FObjectInitializer& Obj
 
 }
 
-float UJCO_UE5_PluginBPLibrary::JCO_UE5_PluginSampleFunction(float Param)
-{
-	return -1;
-}
-
 bool UJCO_UE5_PluginBPLibrary::WithEditor()
 {
 #if WITH_EDITOR

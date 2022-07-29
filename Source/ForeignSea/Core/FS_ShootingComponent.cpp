@@ -30,14 +30,14 @@ void UFS_ShootingComponent::BeginPlay()
 void UFS_ShootingComponent::StartFiring()
 {
 	PlayerWantToShoot = true;
-	TRACE_SCREEN("player want to shoot !");
+	TRACE_SCREEN(1,"player want to shoot !");
 	TRACE("shoot !");
 }
 
 void UFS_ShootingComponent::StopFiring()
 {
 	PlayerWantToShoot = false;
-	TRACE_SCREEN("stop shooting !");
+	TRACE_SCREEN(1,"stop shooting !");
 	TRACE("stop shoot !");
 }
 

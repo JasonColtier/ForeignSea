@@ -35,9 +35,6 @@ class UJCO_UE5_PluginBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_UCLASS_BODY()
 
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Execute Sample function", Keywords = "JCO_UE5_Plugin sample test testing"), Category = "JCO_UE5_PluginTesting")
-	static float JCO_UE5_PluginSampleFunction(float Param);
-
 	//un print custom qui rajoute la possibilité de print un warning ou une erreur depuis le BP et d'utiliser 2 strings qui seront concaténées
 	UFUNCTION(BlueprintCallable, meta=(WorldContext="WorldContextObject", CallableWithoutWorldContext, Keywords = "log print", AdvancedDisplay = "2", DevelopmentOnly), Category="Utilities|String")
 	static void JCO_Print(const UObject* WorldContextObject, FString String1, FString String2, ELogEnum LogCategory, bool bPrintToScreen = true, bool bPrintToLog = true, FLinearColor TextColor = FLinearColor(0.0, 0.66, 1.0), float Duration = 2.f);

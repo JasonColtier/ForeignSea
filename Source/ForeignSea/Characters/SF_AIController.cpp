@@ -12,6 +12,7 @@
 ASF_AIController::ASF_AIController()
 {
 	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));
+	BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorTreeComponent"));
 }
 
 void ASF_AIController::OnPossess(APawn* InPawn)

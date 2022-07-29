@@ -24,6 +24,8 @@ class FOREIGNSEA_API USF_BTTask_SetRotationToPlayer : public UBTTaskNode
 
 	UPROPERTY()
 	AFS_GenericPawn* PlayerPawn;
+
+	USF_BTTask_SetRotationToPlayer();
 	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
