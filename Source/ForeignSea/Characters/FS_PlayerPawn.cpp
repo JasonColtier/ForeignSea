@@ -6,8 +6,9 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "ForeignSea/Core/FS_ShootingComponent.h"
-#include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
+#include "LogTool.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -57,6 +58,7 @@ void AFS_PlayerPawn::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	PlayerController = Cast<APlayerController>(NewController);
+
 }
 
 void AFS_PlayerPawn::MoveForward(float Value)
@@ -84,7 +86,7 @@ void AFS_PlayerPawn::CalculateTargetRotation()
 		bool HitSuccess = GetWorld()->LineTraceSingleByChannel(
 			HitResult, //result
 			MouseLoc, //start
-			MouseLoc + MouseDir * 5000, //end
+			MouseLoc + MouseDir * 50000, //end
 			ECC_Pawn, //collision channel
 			RV_TraceParams
 		);

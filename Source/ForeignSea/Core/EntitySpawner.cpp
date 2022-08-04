@@ -3,7 +3,7 @@
 
 #include "EntitySpawner.h"
 
-#include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
+#include "JCOCheatManager.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -25,9 +25,12 @@ AFS_EnemyPawn* AEntitySpawner::SpawnEnemyAroundPlayer()
 	FVector location = FVector(x,y,20);
 	location += PlayerPawn->GetActorLocation();
 
-	DrawDebugSphere(GetWorld(),location,10,10,FColor::Red,true);
-	
-	AFS_EnemyPawn* Enemy = GetWorld()->SpawnActor<AFS_EnemyPawn>(EnemySpawnedClass,location,FRotator::ZeroRotator);
+	Debug
+		DrawDebugSphere(GetWorld(),location,10,10,FColor::Red,true);
+
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	AFS_EnemyPawn* Enemy = GetWorld()->SpawnActor<AFS_EnemyPawn>(EnemySpawnedClass,location,FRotator::ZeroRotator,SpawnParameters);
 
 	//
 	// TRACE_SCREEN("spawned new enemy ! %s",*Enemy->GetName())
@@ -38,7 +41,8 @@ AFS_EnemyPawn* AEntitySpawner::SpawnEnemyAroundPlayer()
 void AEntitySpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	SetJcoGameInstance;
 }
 
 // Called every frame

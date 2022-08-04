@@ -4,7 +4,7 @@
 #include "FS_ShootingComponent.h"
 
 #include "FS_Projectile.h"
-#include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
+#include "LogTool.h"
 #include "ForeignSea/Characters/FS_GenericPawn.h"
 
 

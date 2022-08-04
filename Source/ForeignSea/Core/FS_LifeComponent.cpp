@@ -35,5 +35,5 @@ void UFS_LifeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 void UFS_LifeComponent::OnOwnerTakeDamage(AActor* DamagedActor, float Damage,const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	TRACE_SCREEN(1,"owner got damaged for %f",Damage);
-	GetOwner()->Destroy();
+	GetOwner()->Destroy(); 
 }

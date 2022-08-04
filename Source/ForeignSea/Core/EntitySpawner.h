@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "JCOCheatManager.h"
 #include "ForeignSea/Characters/FS_EnemyPawn.h"
 #include "GameFramework/Actor.h"
+#include "JcoGameInstanceSubsystem.h"
 #include "EntitySpawner.generated.h"
 
 class AFS_EnemyPawn;
@@ -17,8 +19,9 @@ public:
 	// Sets default values for this actor's properties
 	AEntitySpawner();
 
+
 	UPROPERTY(EditAnywhere)
-	float SpawnRadius = 10;
+	float SpawnRadius = 1000;
 
 	UPROPERTY()
 	APawn* PlayerPawn;
@@ -28,6 +31,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	AFS_EnemyPawn* SpawnEnemyAroundPlayer();
+
+	DeclareJcoDebug;
 
 protected:
 	// Called when the game starts or when spawned

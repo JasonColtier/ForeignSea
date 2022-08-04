@@ -12,7 +12,7 @@ public class ForeignSea : ModuleRules
 			"AIModule", "GameplayTasks", "Blutility","Foliage", "UMG"});
 
 		
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PrivateDependencyModuleNames.AddRange(new string[] {"JCO_UE5_Plugin"});
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
