@@ -15,25 +15,38 @@ class FOREIGNSEA_API AEntitySpawner : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
+public:
+	DeclareJcoDebug;
+
 	// Sets default values for this actor's properties
 	AEntitySpawner();
 
-
+	//La distance à laquelle les enemis vont spawner du joueur
 	UPROPERTY(EditAnywhere)
-	float SpawnRadius = 1000;
+	float SpawnRadius = 3000;
 
+	//le pawn
 	UPROPERTY()
 	APawn* PlayerPawn;
 
+	/**
+	 * @brief Le délai de spawn en secondes
+	 */
+	UPROPERTY(EditAnywhere)
+	float SpawnDelay = 1;
+
+	//les enemis spawnés
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AFS_EnemyPawn> EnemySpawnedClass = AFS_EnemyPawn::StaticClass();
 
+	//la fonction qui fait spawner un enemi au hasard !
 	UFUNCTION(BlueprintCallable)
 	AFS_EnemyPawn* SpawnEnemyAroundPlayer();
 
-	DeclareJcoDebug;
-
+private:
+	UPROPERTY()
+	float TimerSpawnDelay = 0;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

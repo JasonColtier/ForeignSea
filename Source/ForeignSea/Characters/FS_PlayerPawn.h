@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "FS_GenericPawn.h"
+#include "JCOCheatManager.h"
 #include "GameFramework/Pawn.h"
+#include "JcoGameInstanceSubsystem.h"
 #include "FS_PlayerPawn.generated.h"
 
 class UFS_PawnMovementComponent;
@@ -26,6 +28,9 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+
+	DeclareJcoDebug;
+	
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArmComponent;
 
@@ -38,9 +43,12 @@ private:
 	UFUNCTION()
 	void MoveForward(float Value);
 
+	UFUNCTION()
+	void Rotate(float Value);
+
 	//On calcule la location worldspace de la souris sur l'écran et on set la valeur LocationToRotateToward
 	UFUNCTION()
-	void CalculateTargetRotation();
+	void CalculateShootTarget();
 
 public:
 	// Called every frame
@@ -52,3 +60,7 @@ public:
 	//quand on est possessed
 	virtual void PossessedBy(AController* NewController) override;
 };
+
+
+
+

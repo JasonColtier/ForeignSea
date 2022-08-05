@@ -4,6 +4,7 @@
 #include "EntitySpawner.h"
 
 #include "JCOCheatManager.h"
+#include "LogTool.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -25,16 +26,16 @@ AFS_EnemyPawn* AEntitySpawner::SpawnEnemyAroundPlayer()
 	FVector location = FVector(x,y,20);
 	location += PlayerPawn->GetActorLocation();
 
-	Debug
-		DrawDebugSphere(GetWorld(),location,10,10,FColor::Red,true);
-
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	AFS_EnemyPawn* Enemy = GetWorld()->SpawnActor<AFS_EnemyPawn>(EnemySpawnedClass,location,FRotator::ZeroRotator,SpawnParameters);
-
-	//
-	// TRACE_SCREEN("spawned new enemy ! %s",*Enemy->GetName())
-	return nullptr;
+	
+	Debug{
+		DrawDebugSphere(GetWorld(),location,10,10,FColor::Red,true);
+		TRACE_SCREEN(1,"spawned new enemy ! %s",*Enemy->GetName())
+	}
+	
+	return Enemy;
 }
 
 // Called when the game starts or when spawned
@@ -50,5 +51,12 @@ void AEntitySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	TimerSpawnDelay+= DeltaTime;
+	
+	if(TimerSpawnDelay > SpawnDelay)
+	{
+		TimerSpawnDelay = 0;
+		SpawnEnemyAroundPlayer();
+	}
 }
 

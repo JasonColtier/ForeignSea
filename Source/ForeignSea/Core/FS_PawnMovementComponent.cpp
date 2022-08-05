@@ -2,7 +2,10 @@
 
 
 #include "FS_PawnMovementComponent.h"
-#include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
+
+#include "JCOCheatManager.h"
+#include "LogTool.h"
+#include "VectorTypes.h"
 #include "ForeignSea/Characters/FS_GenericPawn.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -14,14 +17,22 @@ UFS_PawnMovementComponent::UFS_PawnMovementComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+float UFS_PawnMovementComponent::GetRotationSpeed()
+{
+	return RotationSpeed;
+}
+
 
 // Called when the game starts
 void UFS_PawnMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SetJcoGameInstance;
+
 	Pawn = Cast<AFS_GenericPawn>(GetOwner());
 	Controller = Cast<APlayerController>(Pawn->GetController());
+	GetOwner()->OnActorHit.AddDynamic(this, &UFS_PawnMovementComponent::OnHit);
 }
 
 
@@ -39,10 +50,17 @@ void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 	/*
 	 * Déplacement du personnage
 	 */
+	if (CorrectionDisplacement != FVector::Zero())
+	{
+		Pawn->SetActorLocation(Pawn->GetActorLocation() + CorrectionDisplacement, true);
+		CorrectionDisplacement = FVector::Zero();
+	}
+
 
 	//on récupère le mouvement du pawn stocké à cette frame
-	const auto Direction = Pawn->ConsumeMovementInputVector();
-	
+	auto Direction = Pawn->ConsumeMovementInputVector();
+	Direction *= FVector(1, 1, 0);
+
 	if (Direction != FVector::Zero())
 	{
 		//le classique Direction * vitesse * deltatime
@@ -52,13 +70,12 @@ void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 		AccumulatedDisplacement += Displacement;
 
 		//on clamp cette vitesse à la vitesse max (multipliée aussi par le deltatime !)
-		AccumulatedDisplacement = AccumulatedDisplacement.GetClampedToSize(0, MaxMoveSpeed*DeltaTime);
+		AccumulatedDisplacement = AccumulatedDisplacement.GetClampedToSize(0, MaxMoveSpeed * DeltaTime);
 	}
 
 	//on set la position du pawn
 	Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement, true);
-	
-	
+
 	//le slow correspond à a résistance qui sera appliquéee
 	float SlowDisplacement = 1 - (DeltaTime + Drag);
 
@@ -67,13 +84,51 @@ void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 
 	//réduction de la vitesse grâce à ce coéficient inférieur à 1
 	AccumulatedDisplacement *= SlowDisplacement;
+
+	// TRACE("Displacement : %s",*AccumulatedDisplacement.ToString())
+	// Debug{
+	// 	DrawDebugDirectionalArrow(GetWorld(),GetOwner()->GetActorLocation(),GetOwner()->GetActorLocation() + AccumulatedDisplacement*100,100,FColor::Red);
+	// }
 }
 
 
 void UFS_PawnMovementComponent::RotateActor(float DeltaTime)
 {
+	if (DisableAutoRotation)
+		return;
+
 	DrawDebugSphere(GetWorld(), Pawn->LocationToRotateToward, 30, 15, FColor::Blue);
 	FRotator PawnRot = UKismetMathLibrary::FindLookAtRotation(Pawn->GetActorLocation(), Pawn->LocationToRotateToward);
 	FRotator SmoothedRot = UKismetMathLibrary::RLerp(Pawn->GetActorRotation(), FRotator(0, PawnRot.Yaw, 0), RotationSpeed * DeltaTime, true);
 	Pawn->SetActorRotation(SmoothedRot);
+}
+
+void UFS_PawnMovementComponent::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& HitInitialImpact)
+{
+	//Le reflection vector est égale à
+	//r=d−2(d.n)n
+	//where d.n is the dot product, and n must be normalized.
+	//https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
+	FVector reflectionDisplacement = (AccumulatedDisplacement - 2 * (UE::Geometry::Dot(AccumulatedDisplacement, HitInitialImpact.ImpactNormal)) * HitInitialImpact.ImpactNormal);
+	CorrectionDisplacement = reflectionDisplacement;
+
+	Debug
+	{
+		const int DrawVectorLength = 20;
+
+		//le vecteur direction à partir du point
+		FVector lineTraceStart = HitInitialImpact.ImpactPoint;
+		FVector lineTraceEnd = HitInitialImpact.ImpactPoint + AccumulatedDisplacement * DrawVectorLength;
+		DrawDebugDirectionalArrow(GetWorld(), lineTraceStart, lineTraceEnd, 100, FColor::White);
+
+		//le vecteur direction arrivant au point d'impact
+		FVector initialDeplacementStart = HitInitialImpact.ImpactPoint - AccumulatedDisplacement * DrawVectorLength;
+		FVector initialDeplacementEnd = HitInitialImpact.ImpactPoint;
+		DrawDebugDirectionalArrow(GetWorld(), initialDeplacementStart, initialDeplacementEnd, 100, FColor::Cyan);
+
+		//le vecteur réfléchit
+		FVector reflectedVectorStart = HitInitialImpact.ImpactPoint;
+		FVector reflectedVectorEnd = HitInitialImpact.ImpactPoint + reflectionDisplacement * DrawVectorLength;
+		DrawDebugDirectionalArrow(GetWorld(), reflectedVectorStart, reflectedVectorEnd, 100, FColor::Red);
+	}
 }

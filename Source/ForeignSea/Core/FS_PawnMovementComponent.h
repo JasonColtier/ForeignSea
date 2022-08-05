@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "JCOCheatManager.h"
+#include "JcoGameInstanceSubsystem.h"
 #include "FS_PawnMovementComponent.generated.h"
 
 
@@ -17,13 +18,19 @@ public:
 	// Sets default values for this component's properties
 	UFS_PawnMovementComponent();
 
-	
+	float GetRotationSpeed();
+
+	UPROPERTY()
+	bool DisableAutoRotation = false;
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
+
+	DeclareJcoDebug
+	
 	UPROPERTY(VisibleAnywhere)
 	AFS_GenericPawn* Pawn;
 
@@ -35,6 +42,9 @@ private:
 	 */
 	UPROPERTY()
 	FVector AccumulatedDisplacement;
+
+	UPROPERTY()
+	FVector CorrectionDisplacement;
 
 	/**
 	 * @brief Acceleration du pawn
@@ -76,7 +86,12 @@ private:
 	UFUNCTION()
 	void RotateActor(float DeltaTime);
 
+	UFUNCTION()
+	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& HitInitialImpact);
+
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 };
+
+
