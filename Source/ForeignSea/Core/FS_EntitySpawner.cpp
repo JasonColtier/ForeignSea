@@ -1,21 +1,21 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "EntitySpawner.h"
+#include "FS_EntitySpawner.h"
 
 #include "JCOCheatManager.h"
 #include "LogTool.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
-AEntitySpawner::AEntitySpawner()
+AFS_EntitySpawner::AFS_EntitySpawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
 
-AFS_EnemyPawn* AEntitySpawner::SpawnEnemyAroundPlayer()
+AFS_EnemyPawn* AFS_EntitySpawner::SpawnEnemyAroundPlayer()
 {
 	if(!PlayerPawn)
 		PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(),0);
@@ -39,7 +39,7 @@ AFS_EnemyPawn* AEntitySpawner::SpawnEnemyAroundPlayer()
 }
 
 // Called when the game starts or when spawned
-void AEntitySpawner::BeginPlay()
+void AFS_EntitySpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -47,7 +47,7 @@ void AEntitySpawner::BeginPlay()
 }
 
 // Called every frame
-void AEntitySpawner::Tick(float DeltaTime)
+void AFS_EntitySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 

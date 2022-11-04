@@ -9,6 +9,7 @@
 
 
 class AFS_GenericPawn;
+class AFS_WaterManager;
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class FOREIGNSEA_API UFS_PawnMovementComponent : public UActorComponent
 {
@@ -43,6 +44,12 @@ private:
 	UPROPERTY()
 	FVector AccumulatedDisplacement;
 
+	UPROPERTY()
+	AFS_WaterManager* WaterManager;
+	
+	/**
+	 * @brief Permet de corriger le déplacement de l'actor s'il entre en collision avec quelque chose d'une frame sur l'autre
+	 */
 	UPROPERTY()
 	FVector CorrectionDisplacement;
 

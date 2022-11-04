@@ -3,6 +3,8 @@
 
 #include "FS_LifeComponent.h"
 
+#include <algorithm>
+
 #include "../../../Plugins/JCO_UE5_Plugin/Source/JCO_UE5_Plugin/Public/LogTool.h"
 
 // Sets default values for this component's properties
@@ -35,5 +37,11 @@ void UFS_LifeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 void UFS_LifeComponent::OnOwnerTakeDamage(AActor* DamagedActor, float Damage,const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	TRACE_SCREEN(1,"owner got damaged for %f",Damage);
-	GetOwner()->Destroy(); 
+	LifeAmount -= Damage;
+	LifeAmount = std::clamp(LifeAmount,0,MaxLife);
+
+	if(LifeAmount == 0)
+	{
+		GetOwner()->Destroy(); 
+	}
 }

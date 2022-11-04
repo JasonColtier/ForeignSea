@@ -7,11 +7,11 @@
 #include "ForeignSea/Characters/FS_EnemyPawn.h"
 #include "GameFramework/Actor.h"
 #include "JcoGameInstanceSubsystem.h"
-#include "EntitySpawner.generated.h"
+#include "FS_EntitySpawner.generated.h"
 
 class AFS_EnemyPawn;
 UCLASS()
-class FOREIGNSEA_API AEntitySpawner : public AActor
+class FOREIGNSEA_API AFS_EntitySpawner : public AActor
 {
 	GENERATED_BODY()
 	
@@ -19,7 +19,7 @@ public:
 	DeclareJcoDebug;
 
 	// Sets default values for this actor's properties
-	AEntitySpawner();
+	AFS_EntitySpawner();
 
 	//La distance à laquelle les enemis vont spawner du joueur
 	UPROPERTY(EditAnywhere)

@@ -7,6 +7,8 @@
 #include "LogTool.h"
 #include "VectorTypes.h"
 #include "ForeignSea/Characters/FS_GenericPawn.h"
+#include "ForeignSea/Watermanager/FS_WaterManager.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values for this component's properties
@@ -33,6 +35,13 @@ void UFS_PawnMovementComponent::BeginPlay()
 	Pawn = Cast<AFS_GenericPawn>(GetOwner());
 	Controller = Cast<APlayerController>(Pawn->GetController());
 	GetOwner()->OnActorHit.AddDynamic(this, &UFS_PawnMovementComponent::OnHit);
+
+	WaterManager = Cast<AFS_WaterManager>(UGameplayStatics::GetActorOfClass(GetWorld(),AFS_WaterManager::StaticClass()));
+
+	if(!WaterManager)
+	{
+		TRACE_ERROR("WATER MANAGER NOT FOUND !")
+	}
 }
 
 
@@ -54,6 +63,10 @@ void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 	{
 		Pawn->SetActorLocation(Pawn->GetActorLocation() + CorrectionDisplacement, true);
 		CorrectionDisplacement = FVector::Zero();
+	}
+
+	if(WaterManager)
+	{
 	}
 
 
@@ -112,7 +125,7 @@ void UFS_PawnMovementComponent::OnHit(AActor* SelfActor, AActor* OtherActor, FVe
 	FVector reflectionDisplacement = (AccumulatedDisplacement - 2 * (UE::Geometry::Dot(AccumulatedDisplacement, HitInitialImpact.ImpactNormal)) * HitInitialImpact.ImpactNormal);
 	CorrectionDisplacement = reflectionDisplacement;
 
-	Debug
+	Debug 
 	{
 		const int DrawVectorLength = 20;
 

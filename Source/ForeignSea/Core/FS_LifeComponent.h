@@ -15,7 +15,13 @@ class FOREIGNSEA_API UFS_LifeComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UFS_LifeComponent();
+	
+	UPROPERTY(EditAnywhere)
+	int MaxLife = 3;
 
+	UPROPERTY()
+	int LifeAmount = MaxLife;
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
