@@ -37,11 +37,8 @@ void UFS_PawnMovementComponent::BeginPlay()
 	GetOwner()->OnActorHit.AddDynamic(this, &UFS_PawnMovementComponent::OnHit);
 
 	WaterManager = Cast<AFS_WaterManager>(UGameplayStatics::GetActorOfClass(GetWorld(),AFS_WaterManager::StaticClass()));
-
 	if(!WaterManager)
-	{
-		TRACE_ERROR("WATER MANAGER NOT FOUND !")
-	}
+		TRACE_ERROR("water manager not found !")
 }
 
 
@@ -64,11 +61,7 @@ void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 		Pawn->SetActorLocation(Pawn->GetActorLocation() + CorrectionDisplacement, true);
 		CorrectionDisplacement = FVector::Zero();
 	}
-
-	if(WaterManager)
-	{
-	}
-
+	
 
 	//on récupère le mouvement du pawn stocké à cette frame
 	auto Direction = Pawn->ConsumeMovementInputVector();
@@ -86,8 +79,17 @@ void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 		AccumulatedDisplacement = AccumulatedDisplacement.GetClampedToSize(0, MaxMoveSpeed * DeltaTime);
 	}
 
+	FVector offsetWave = FVector::Zero();
+
+	if(WaterManager)
+	{
+		float targetLevel = WaterManager->GetZoffsetWaterForActor(GetOwner());
+		offsetWave.Z = targetLevel - GetOwner()->GetActorLocation().Z;
+		TRACE_SCREEN(0,"offsetWave.Z %f",offsetWave.Z);
+	}
+	
 	//on set la position du pawn
-	Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement, true);
+	Pawn->SetActorLocation(Pawn->GetActorLocation() + AccumulatedDisplacement + offsetWave, true);
 
 	//le slow correspond à a résistance qui sera appliquéee
 	float SlowDisplacement = 1 - (DeltaTime + Drag);

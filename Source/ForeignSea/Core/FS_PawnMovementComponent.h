@@ -10,7 +10,7 @@
 
 class AFS_GenericPawn;
 class AFS_WaterManager;
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent),Blueprintable)
 class FOREIGNSEA_API UFS_PawnMovementComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -24,9 +24,13 @@ public:
 	UPROPERTY()
 	bool DisableAutoRotation = false;
 
+
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+
 
 private:
 
@@ -44,8 +48,12 @@ private:
 	UPROPERTY()
 	FVector AccumulatedDisplacement;
 
+
 	UPROPERTY()
 	AFS_WaterManager* WaterManager;
+
+	UPROPERTY()
+	float CurrentZOffsetWave = 0;
 	
 	/**
 	 * @brief Permet de corriger le déplacement de l'actor s'il entre en collision avec quelque chose d'une frame sur l'autre

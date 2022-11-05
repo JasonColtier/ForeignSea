@@ -25,3 +25,15 @@ void AFS_WaterManager::Tick(float DeltaTime)
 
 }
 
+float AFS_WaterManager::GetZoffsetWaterForActor(AActor* Actor)
+{
+	if(MapOffsetByActor.Find(Actor))
+	{
+		return MapOffsetByActor[Actor];
+	}else
+	{
+		MapOffsetByActor.Add(Actor);
+		return 0;
+	}
+}
+
