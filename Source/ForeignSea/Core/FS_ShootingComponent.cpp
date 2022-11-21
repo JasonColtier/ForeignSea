@@ -50,7 +50,7 @@ void UFS_ShootingComponent::SpawnProjectile()
 	// auto* Projectile = GetWorld()->SpawnActor<AFS_Projectile>(ProjectyleClass,GetComponentLocation(), GetComponentRotation());
 	FTransform SpawnTransform; //création d'un transform
 	SpawnTransform.SetLocation(GetComponentLocation());
-	SpawnTransform.SetRotation(GetComponentRotation().Quaternion());
+	SpawnTransform.SetRotation(FRotator(0,GetComponentRotation().Yaw,0).Quaternion());
 	//on commence le spawning
 	auto* Projectile = GetWorld()->SpawnActorDeferred<AFS_Projectile>(ProjectyleClass, SpawnTransform);
 	Projectile->ShootingPawn = Pawn; //ça nous laisse le temps de set cette variable

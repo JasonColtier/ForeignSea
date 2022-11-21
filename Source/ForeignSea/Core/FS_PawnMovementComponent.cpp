@@ -85,7 +85,7 @@ void UFS_PawnMovementComponent::MoveActor(float DeltaTime)
 	{
 		float targetLevel = WaterManager->GetZoffsetWaterForActor(GetOwner());
 		offsetWave.Z = targetLevel - GetOwner()->GetActorLocation().Z;
-		TRACE_SCREEN(0,"offsetWave.Z %f",offsetWave.Z);
+		// TRACE_SCREEN(0,"offsetWave.Z %f",offsetWave.Z);
 	}
 	
 	//on set la position du pawn

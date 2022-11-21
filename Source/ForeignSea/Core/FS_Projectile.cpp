@@ -19,6 +19,7 @@ AFS_Projectile::AFS_Projectile()
 
 	//Attaching
 	RootComponent = Mesh;
+	CapsuleComponent->SetupAttachment(Mesh);
 
 	//binding overlaps
 	this->OnActorBeginOverlap.AddDynamic(this,&AFS_Projectile::OnBeginOverlap);
