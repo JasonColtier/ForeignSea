@@ -44,17 +44,17 @@ void UFS_ShootingComponent::StopFiring()
 
 void UFS_ShootingComponent::SpawnProjectile()
 {
-	//todo Faire un actor component avec un ou plusieurs shoot point ?
-	//check(ShootingPoint);
-
-	// auto* Projectile = GetWorld()->SpawnActor<AFS_Projectile>(ProjectyleClass,GetComponentLocation(), GetComponentRotation());
-	FTransform SpawnTransform; //création d'un transform
-	SpawnTransform.SetLocation(GetComponentLocation());
-	SpawnTransform.SetRotation(FRotator(0,GetComponentRotation().Yaw,0).Quaternion());
-	//on commence le spawning
-	auto* Projectile = GetWorld()->SpawnActorDeferred<AFS_Projectile>(ProjectyleClass, SpawnTransform);
-	Projectile->ShootingPawn = Pawn; //ça nous laisse le temps de set cette variable
-	Projectile->FinishSpawning(SpawnTransform); //on finalise le spawn
+// 	//todo Faire un actor component avec un ou plusieurs shoot point ?
+// 	//check(ShootingPoint);
+//
+// 	// auto* Projectile = GetWorld()->SpawnActor<AFS_Projectile>(ProjectyleClass,GetComponentLocation(), GetComponentRotation());
+// 	FTransform SpawnTransform; //création d'un transform
+// 	SpawnTransform.SetLocation(GetComponentLocation());
+// 	SpawnTransform.SetRotation(FRotator(0,GetComponentRotation().Yaw,0).Quaternion());
+// 	//on commence le spawning
+// 	auto* Projectile = GetWorld()->SpawnActorDeferred<AFS_Projectile>(ProjectyleClass, SpawnTransform);
+// 	Projectile->ShootingPawn = Pawn; //ça nous laisse le temps de set cette variable
+// 	Projectile->FinishSpawning(SpawnTransform); //on finalise le spawn
 }
 
 // Called every frame
@@ -62,20 +62,20 @@ void UFS_ShootingComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	//pour le délai entre les tirs
-	TimerShootDelay += DeltaTime;
-
-	//si on est en dessous du timer on peut tirer
-	if (CanShoot && PlayerWantToShoot)
-	{
-		SpawnProjectile();
-		CanShoot = false;
-		TimerShootDelay = 0; //permet de ne pas avoir un écart plus court entre la 1ere et 2eme bullet 
-	}
-	
-	if (TimerShootDelay > ShootingSpeed) //il faut attrendre le rechargement
-	{
-		CanShoot = true;
-		TimerShootDelay = 0;
-	}
+	// //pour le délai entre les tirs
+	// TimerShootDelay += DeltaTime;
+	//
+	// //si on est en dessous du timer on peut tirer
+	// if (CanShoot && PlayerWantToShoot)
+	// {
+	// 	SpawnProjectile();
+	// 	CanShoot = false;
+	// 	TimerShootDelay = 0; //permet de ne pas avoir un écart plus court entre la 1ere et 2eme bullet 
+	// }
+	//
+	// if (TimerShootDelay > ShootingSpeed) //il faut attrendre le rechargement
+	// {
+	// 	CanShoot = true;
+	// 	TimerShootDelay = 0;
+	// }
 }

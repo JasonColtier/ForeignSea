@@ -46,10 +46,6 @@ private:
 	UFUNCTION()
 	void Rotate(float Value);
 
-	//On calcule la location worldspace de la souris sur l'écran et on set la valeur LocationToRotateToward
-	UFUNCTION()
-	void CalculateShootTarget();
-
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

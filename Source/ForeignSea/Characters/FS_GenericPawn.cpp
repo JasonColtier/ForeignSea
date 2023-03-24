@@ -18,7 +18,7 @@ AFS_GenericPawn::AFS_GenericPawn()
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"));
 	LifeComponent = CreateDefaultSubobject<UFS_LifeComponent>(TEXT("Life Component"));
 	ShootingComponent = CreateDefaultSubobject<UFS_ShootingComponent>(TEXT("Shooting Component"));
-	MovementComponent = CreateDefaultSubobject<UFS_PawnMovementComponent>(TEXT("Pawn Movement Component"));
+	// MovementComponent = CreateDefaultSubobject<UFS_PawnMovementComponent>(TEXT("Pawn Movement Component"));
 
 	//Le mesh en tant que root
 	RootComponent = Mesh;

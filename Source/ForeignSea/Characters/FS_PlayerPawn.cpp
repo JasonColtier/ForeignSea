@@ -34,14 +34,13 @@ void AFS_PlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	SetJcoGameInstance;
-	MovementComponent->DisableAutoRotation = true;
+
 }
 
 // Called every frame
 void AFS_PlayerPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	CalculateShootTarget();
 }
 
 // Called to bind functionality to input
@@ -68,6 +67,7 @@ void AFS_PlayerPawn::MoveForward(float Value)
 	{
 		//on ajoute le mouvement 
 		AddMovementInput(GetActorForwardVector(), Value, true);
+		TRACE("move forward value %f",Value);
 	}
 
 }
@@ -78,49 +78,8 @@ void AFS_PlayerPawn::Rotate(float Value)
 	{
 		return;
 	}
-
-	FRotator newRot = FRotator(0,MovementComponent->GetRotationSpeed()*Value,0);
+	
+	FRotator newRot = FRotator(0,1*Value,0);
 	AddActorLocalRotation(newRot);
 }
 
-void AFS_PlayerPawn::CalculateShootTarget()
-{
-	if (!PlayerController)
-		return;
-
-	FVector MouseLoc;
-	FVector MouseDir;
-
-	if (PlayerController->DeprojectMousePositionToWorld(MouseLoc, MouseDir))
-	{
-		FHitResult HitResult;
-		FCollisionQueryParams RV_TraceParams = FCollisionQueryParams();
-		bool HitSuccess = GetWorld()->LineTraceSingleByChannel(
-			HitResult, //result
-			MouseLoc, //start
-			MouseLoc + MouseDir * 50000, //end
-			ECC_Camera	, //collision channel
-			RV_TraceParams
-		);
-
-		if (HitSuccess)
-		{
-			LocationToRotateToward = HitResult.Location;
-			FRotator ShootingRot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LocationToRotateToward);
-			ShootingComponent->SetWorldRotation(ShootingRot);
-			
-			Debug{
-				DrawDebugSphere(GetWorld(),LocationToRotateToward*FVector(1,1,0),10,10,FColor::White);
-			}
-			
-		}
-		else
-		{
-			TRACE_ERROR("mouse raycast did not hit !");
-		}
-	}
-	else
-	{
-		// TRACE_ERROR("not able to point find mouse position !");
-	}
-}
