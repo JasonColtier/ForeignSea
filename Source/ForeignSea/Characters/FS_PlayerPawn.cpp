@@ -72,15 +72,5 @@ void AFS_PlayerPawn::MoveForward(float Value)
 
 void AFS_PlayerPawn::Rotate(float Value)
 {
-	//ligne importante : on aligne le pawn sur la surface de la sphère
-	//ça marche car la sphère est à 0 en origine
-	FVector upNormalOnSphere = GetActorLocation().GetSafeNormal();
-	FVector rotationAxis = GetActorForwardVector().GetSafeNormal();
-
-	TRACE("up normal %s , rot axis %s",*upNormalOnSphere.ToString(),*rotationAxis.ToString());
-	
-	FRotator newRot = UKismetMathLibrary::MakeRotFromZX(upNormalOnSphere,rotationAxis);	
-	SetActorRotation(newRot);
-	
 	AddActorLocalRotation(FRotator(0,	Value*TurnSpeed*GetWorld()->DeltaTimeSeconds,0));
 }

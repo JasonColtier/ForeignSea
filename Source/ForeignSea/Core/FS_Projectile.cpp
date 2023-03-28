@@ -47,8 +47,8 @@ void AFS_Projectile::Tick(float DeltaTime)
 		Destroy();
 	}
 
-	//déplacement de notre projectile
-	AddActorWorldOffset(GetActorForwardVector()*BaseSpeed,true);
+	// //déplacement de notre projectile
+	// AddActorWorldOffset(GetActorForwardVector()*BaseSpeed,true);
 
 }
 
