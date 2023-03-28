@@ -79,8 +79,8 @@ void AFS_PlayerPawn::Rotate(float Value)
 
 	TRACE("up normal %s , rot axis %s",*upNormalOnSphere.ToString(),*rotationAxis.ToString());
 	
-	FRotator newRot = UKismetMathLibrary::MakeRotFromZX(upNormalOnSphere,rotationAxis);
-	newRot = UKismetMathLibrary::ComposeRotators(newRot,FRotator(0,Value*TurnSpeed*GetWorld()->DeltaTimeSeconds,0));
-	
+	FRotator newRot = UKismetMathLibrary::MakeRotFromZX(upNormalOnSphere,rotationAxis);	
 	SetActorRotation(newRot);
+	
+	AddActorLocalRotation(FRotator(0,	Value*TurnSpeed*GetWorld()->DeltaTimeSeconds,0));
 }
