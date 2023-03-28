@@ -25,7 +25,6 @@ void UFS_SphericalMovementComp::BeginPlay()
 	Super::BeginPlay();
 
 	Pawn = Cast<APawn>(GetOwner());
-	
 }
 
 
@@ -34,16 +33,32 @@ void UFS_SphericalMovementComp::TickComponent(float DeltaTime, ELevelTick TickTy
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	auto Direction = Pawn->ConsumeMovementInputVector();
-	TRACE("direction %s",*Direction.ToString());
-
-	// FVector newPos = UKismetMathLibrary::RotateAngleAxis(Pawn->GetActorLocation(),DeltaTime*-50,Pawn->GetActorRightVector());
-	//
-	// Pawn->SetActorLocation(newPos);
-	//
-	// FRotator newRot = UKismetMathLibrary::MakeRotFromXZ(Pawn->GetActorLocation(),Pawn->GetActorForwardVector());
-	//
-	// Pawn->SetActorRotation(UKismetMathLibrary::ComposeRotators(newRot,FRotator(0,0,90)));
+	//we get the input from pawn
 	
-}
+	if (Pawn->ConsumeMovementInputVector() != FVector::Zero())
+	{
+		// TRACE("diff !");
+		//le classique Direction * vitesse * deltatime
+		const float Displacement = Acceleration * DeltaTime;
 
+		//on accumule la vitesse dans le temps
+		AccumulatedDisplacement += Displacement;
+
+		//on clamp cette vitesse à la vitesse max (multipliée aussi par le deltatime !)
+		AccumulatedDisplacement = UKismetMathLibrary::FClamp(AccumulatedDisplacement,0,MaxMoveSpeed * DeltaTime);
+	}
+
+	// TRACE("acc displacement : %f",AccumulatedDisplacement)
+	//we move the player along the surface by rtating it agound the origin with the right vector = we are allways on a 2D sphere
+	auto newLoc = UKismetMathLibrary::RotateAngleAxis(Pawn->GetActorLocation(), AccumulatedDisplacement * DeltaTime, Pawn->GetActorRightVector());
+	Pawn->SetActorLocation(newLoc);
+
+	//le slow correspond à a résistance qui sera appliquéee
+	float SlowDisplacement = 1 - (DeltaTime + Drag);
+
+	//clamp de la valeur entre 0 et 1 pour en faire un coéficient
+	SlowDisplacement = UKismetMathLibrary::FClamp(SlowDisplacement, 0.f, 1.f);
+
+	//réduction de la vitesse grâce à ce coéficient inférieur à 1
+	AccumulatedDisplacement *= SlowDisplacement;
+}

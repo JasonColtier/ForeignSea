@@ -36,6 +36,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* CameraComponent;
+
+	UPROPERTY(EditAnywhere)
+	float TurnSpeed = 10;
 	
 	UPROPERTY()
 	APlayerController* PlayerController;

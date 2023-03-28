@@ -34,7 +34,6 @@ void AFS_PlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	SetJcoGameInstance;
-
 }
 
 // Called every frame
@@ -67,19 +66,21 @@ void AFS_PlayerPawn::MoveForward(float Value)
 	{
 		//on ajoute le mouvement 
 		AddMovementInput(GetActorForwardVector(), Value, true);
-		TRACE("move forward value %f",Value);
+		// TRACE("move forward value %f", Value);
 	}
-
 }
 
 void AFS_PlayerPawn::Rotate(float Value)
 {
-	if(Value== 0)
-	{
-		return;
-	}
-	
-	FRotator newRot = FRotator(0,1*Value,0);
-	AddActorLocalRotation(newRot);
-}
+	//ligne importante : on aligne le pawn sur la surface de la sphère
+	//ça marche car la sphère est à 0 en origine
+	FVector upNormalOnSphere = GetActorLocation().GetSafeNormal();
+	FVector rotationAxis = GetActorForwardVector().GetSafeNormal();
 
+	TRACE("up normal %s , rot axis %s",*upNormalOnSphere.ToString(),*rotationAxis.ToString());
+	
+	FRotator newRot = UKismetMathLibrary::MakeRotFromZX(upNormalOnSphere,rotationAxis);
+	newRot = UKismetMathLibrary::ComposeRotators(newRot,FRotator(0,Value*TurnSpeed*GetWorld()->DeltaTimeSeconds,0));
+	
+	SetActorRotation(newRot);
+}
