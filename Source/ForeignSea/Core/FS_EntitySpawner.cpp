@@ -6,6 +6,7 @@
 #include "JCOCheatManager.h"
 #include "LogTool.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AFS_EntitySpawner::AFS_EntitySpawner()
@@ -17,21 +18,21 @@ AFS_EntitySpawner::AFS_EntitySpawner()
 
 AFS_EnemyPawn* AFS_EntitySpawner::SpawnEnemyAroundPlayer()
 {
-	if(!PlayerPawn)
+	if(!IsValid(PlayerPawn))
 		PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(),0);
-	
-	float randomAngle = FMath::RandRange(0.f,2 * PI);
-	float x = SpawnRadius * FMath::Sin(randomAngle);
-	float y = SpawnRadius * FMath::Cos(randomAngle);
-	FVector location = FVector(x,y,20);
-	location += PlayerPawn->GetActorLocation();
+
+	if(!IsValid(PlayerPawn))
+		return nullptr;
+
+	FVector spawnCoo = UKismetMathLibrary::RandomUnitVector() *	SphereOnWorld->GetActorScale().X / 2 * 100;
 
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	AFS_EnemyPawn* Enemy = GetWorld()->SpawnActor<AFS_EnemyPawn>(EnemySpawnedClass,location,FRotator::ZeroRotator,SpawnParameters);
+	AFS_EnemyPawn* Enemy = GetWorld()->SpawnActor<AFS_EnemyPawn>(EnemySpawnedClass,spawnCoo,FRotator::ZeroRotator,SpawnParameters);
+	Enemy->Target = PlayerPawn;
 	
 	Debug{
-		DrawDebugSphere(GetWorld(),location,10,10,FColor::Red,true);
+		DrawDebugSphere(GetWorld(),spawnCoo,10,10,FColor::Red,true);
 		TRACE_SCREEN(1,"spawned new enemy ! %s",*Enemy->GetName())
 	}
 	

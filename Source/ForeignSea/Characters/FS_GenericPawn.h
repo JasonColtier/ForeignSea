@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "FS_GenericPawn.generated.h"
 
+class UFS_SphericalMovementComp;
 class UFS_PawnMovementComponent;
 class UCapsuleComponent;
 class UFS_ShootingComponent;
@@ -27,14 +28,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	UCapsuleComponent* CapsuleComponent;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UFS_ShootingComponent* ShootingComponent;
 
 	UPROPERTY(EditAnywhere)
 	UFS_LifeComponent* LifeComponent;
 
-	// UPROPERTY(EditAnywhere)
-	// UFS_PawnMovementComponent* MovementComponent;
+	UPROPERTY(EditAnywhere)
+	UFS_SphericalMovementComp* SphericalMovementComp;
 
 	//la position vers laquelle le pawn va se tourner grâce au mouvement component
 	//les enfants pourront écrire cette valeur

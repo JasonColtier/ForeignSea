@@ -7,6 +7,7 @@
 #include "ForeignSea/Core/FS_LifeComponent.h"
 #include "ForeignSea/Core/FS_PawnMovementComponent.h"
 #include "ForeignSea/Core/FS_ShootingComponent.h"
+#include "ForeignSea/Core/FS_SphericalMovementComp.h"
 
 // Sets default values
 AFS_GenericPawn::AFS_GenericPawn()
@@ -18,7 +19,7 @@ AFS_GenericPawn::AFS_GenericPawn()
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Component"));
 	LifeComponent = CreateDefaultSubobject<UFS_LifeComponent>(TEXT("Life Component"));
 	ShootingComponent = CreateDefaultSubobject<UFS_ShootingComponent>(TEXT("Shooting Component"));
-	// MovementComponent = CreateDefaultSubobject<UFS_PawnMovementComponent>(TEXT("Pawn Movement Component"));
+	SphericalMovementComp = CreateDefaultSubobject<UFS_SphericalMovementComp>(TEXT("Spherical Movement Component"));
 
 	//Le mesh en tant que root
 	RootComponent = Mesh;

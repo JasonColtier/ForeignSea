@@ -23,11 +23,14 @@ public:
 
 	//La distance à laquelle les enemis vont spawner du joueur
 	UPROPERTY(EditAnywhere)
-	float SpawnRadius = 3000;
+	float PlayerAvoidSpawnRadius = 3000;
 
 	//le pawn
 	UPROPERTY()
 	APawn* PlayerPawn;
+
+	UPROPERTY(EditAnywhere)
+	AActor* SphereOnWorld;
 
 	/**
 	 * @brief Le délai de spawn en secondes
