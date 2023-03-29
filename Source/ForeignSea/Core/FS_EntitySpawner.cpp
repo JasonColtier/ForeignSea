@@ -24,17 +24,21 @@ AFS_EnemyPawn* AFS_EntitySpawner::SpawnEnemyAroundPlayer()
 	if(!IsValid(PlayerPawn))
 		return nullptr;
 
-	FVector spawnCoo = UKismetMathLibrary::RandomUnitVector() *	SphereOnWorld->GetActorScale().X / 2 * 100;
+	
 
+	FVector spawnCoo = UKismetMathLibrary::RandomUnitVectorInConeInDegrees(PlayerPawn->GetActorUpVector()*-1,SpawnConeRadius) *	SphereOnWorld->GetActorScale().X / 2 * 100;
+
+	Debug{
+		DrawDebugSphere(GetWorld(),spawnCoo,10,10,FColor::Red,true);
+		// TRACE_SCREEN(1,"spawned new enemy ! %s",*Enemy->GetName())
+	}
+	
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	AFS_EnemyPawn* Enemy = GetWorld()->SpawnActor<AFS_EnemyPawn>(EnemySpawnedClass,spawnCoo,FRotator::ZeroRotator,SpawnParameters);
 	Enemy->Target = PlayerPawn;
 	
-	Debug{
-		DrawDebugSphere(GetWorld(),spawnCoo,10,10,FColor::Red,true);
-		TRACE_SCREEN(1,"spawned new enemy ! %s",*Enemy->GetName())
-	}
+
 	
 	return Enemy;
 }

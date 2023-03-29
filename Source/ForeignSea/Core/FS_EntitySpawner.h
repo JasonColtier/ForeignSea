@@ -23,7 +23,7 @@ public:
 
 	//La distance à laquelle les enemis vont spawner du joueur
 	UPROPERTY(EditAnywhere)
-	float PlayerAvoidSpawnRadius = 3000;
+	int SpawnConeRadius = 70;
 
 	//le pawn
 	UPROPERTY()
