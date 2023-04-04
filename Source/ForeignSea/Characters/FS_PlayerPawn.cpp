@@ -3,6 +3,7 @@
 
 #include "FS_PlayerPawn.h"
 
+#include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "ForeignSea/Core/FS_ShootingComponent.h"
@@ -21,7 +22,8 @@ AFS_PlayerPawn::AFS_PlayerPawn()
 	//Création des components
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("Ability System Component"));
+	AttributeSet = CreateDefaultSubobject<UAttributeSet>(TEXT("Attribute set"));
 
 	//Attachement des scene components
 	SpringArmComponent->SetupAttachment(RootComponent);
@@ -58,6 +60,33 @@ void AFS_PlayerPawn::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	PlayerController = Cast<APlayerController>(NewController);
+	AbilitySystemComponent->InitAbilityActorInfo(NewController,this);
+}
+
+UAbilitySystemComponent* AFS_PlayerPawn::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+void AFS_PlayerPawn::GrantAbility(TSubclassOf<UGameplayAbility> AbilityClass, int32 Level, int32 InputCode)
+{
+	if(IsValid(AbilitySystemComponent) && IsValid(AbilityClass))
+	{
+		//create an object 
+		UGameplayAbility* Ability = AbilityClass->GetDefaultObject<UGameplayAbility>();
+
+		if(IsValid(Ability))
+		{
+			//struct for our ability
+			FGameplayAbilitySpec AbilitySpec(
+			Ability,
+			Level,
+			InputCode
+			);
+
+			AbilitySystemComponent->GiveAbility(AbilitySpec);
+		}
+	}
 }
 
 void AFS_PlayerPawn::MoveForward(float Value)

@@ -3,19 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
+#include "AttributeSet.h"
 #include "FS_GenericPawn.h"
 #include "JCOCheatManager.h"
-#include "GameFramework/Pawn.h"
 #include "JcoGameInstanceSubsystem.h"
 #include "FS_PlayerPawn.generated.h"
 
+class UGameplayAbility;
 class UFS_PawnMovementComponent;
 class UFS_ShootingComponent;
 class UCapsuleComponent;
 class UCameraComponent;
 class USpringArmComponent;
 UCLASS()
-class FOREIGNSEA_API AFS_PlayerPawn : public AFS_GenericPawn
+class FOREIGNSEA_API AFS_PlayerPawn : public AFS_GenericPawn, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -42,6 +44,14 @@ private:
 	
 	UPROPERTY()
 	APlayerController* PlayerController;
+
+	/** Ability System Component. Required to use Gameplay Attributes and Gameplay Abilities. */
+	UPROPERTY(VisibleDefaultsOnly, Category = "Abilities")
+	UAbilitySystemComponent* AbilitySystemComponent;
+
+	/**  */
+	UPROPERTY(VisibleDefaultsOnly, Category = "Abilities")
+	UAttributeSet* AttributeSet;
 	
 	UFUNCTION()
 	void MoveForward(float Value);
@@ -58,6 +68,11 @@ public:
 
 	//quand on est possessed
 	virtual void PossessedBy(AController* NewController) override;
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	UFUNCTION(BlueprintCallable)
+	void GrantAbility(TSubclassOf<UGameplayAbility> AbilityClass,int32 Level,int32 InputCode);
 };
 
 
