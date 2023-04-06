@@ -45,9 +45,7 @@ private:
 	UPROPERTY()
 	APlayerController* PlayerController;
 
-	/** Ability System Component. Required to use Gameplay Attributes and Gameplay Abilities. */
-	UPROPERTY(VisibleDefaultsOnly, Category = "Abilities")
-	UAbilitySystemComponent* AbilitySystemComponent;
+
 
 	/**  */
 	UPROPERTY(VisibleDefaultsOnly, Category = "Abilities")
@@ -71,6 +69,10 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
+	/** Ability System Component. Required to use Gameplay Attributes and Gameplay Abilities. */
+	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite, Category = "Abilities")
+	UAbilitySystemComponent* AbilitySystemComponent;
+	
 	UFUNCTION(BlueprintCallable)
 	void GrantAbility(TSubclassOf<UGameplayAbility> AbilityClass,int32 Level,int32 InputCode);
 };
