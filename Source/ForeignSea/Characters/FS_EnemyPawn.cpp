@@ -27,8 +27,10 @@ void AFS_EnemyPawn::Tick(float DeltaTime)
 
 	if (IsValid(Target))
 	{
-		FRotator pawnToTarget = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
-		SetActorRelativeRotation(FRotator(0, pawnToTarget.Yaw, 0));
+		// FRotator pawnToTarget = UKismetMathLibrary::FindRelativeLookAtRotation(GetActorTransform(),Target->GetActorLocation());
+		// FRotator pawnToTarget = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
+		// SetActorRotation(FRotator(pawnToTarget));
+		// SetActorRelativeRotation(FRotator(0,GetActorRotation().Yaw,0));
 	}
 }
 

@@ -46,7 +46,7 @@ void UFS_SphericalMovementComp::TickComponent(float DeltaTime, ELevelTick TickTy
 			//on clamp cette vitesse à la vitesse max (multipliée aussi par le deltatime !)
 			AccumulatedDisplacement = UKismetMathLibrary::FClamp(AccumulatedDisplacement,0,MaxMoveSpeed * DeltaTime);
 		}
-	}else
+	}else//bullet ?
 	{
 		const float Displacement = Acceleration * DeltaTime;
 		//on accumule la vitesse dans le temp
@@ -57,7 +57,7 @@ void UFS_SphericalMovementComp::TickComponent(float DeltaTime, ELevelTick TickTy
 	
 
 	// TRACE("acc displacement : %f",AccumulatedDisplacement)
-	//we move the player along the surface by rtating it agound the origin with the right vector = we are allways on a 2D sphere
+	//we move the owner along the surface by rtating it agound the origin with the right vector = we are allways on a 2D sphere
 	auto newLoc = UKismetMathLibrary::RotateAngleAxis(GetOwner()->GetActorLocation(), AccumulatedDisplacement, GetOwner()->GetActorRightVector());
 	GetOwner()->SetActorLocation(newLoc);
 
