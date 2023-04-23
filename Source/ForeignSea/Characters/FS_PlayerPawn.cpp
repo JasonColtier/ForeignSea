@@ -53,6 +53,8 @@ void AFS_PlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("Rotate", this, &AFS_PlayerPawn::Rotate);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, ShootingComponent, &UFS_ShootingComponent::StartFiring);
 	PlayerInputComponent->BindAction("Fire", IE_Released, ShootingComponent, &UFS_ShootingComponent::StopFiring);
+
+	AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent,FGameplayAbilityInputBinds("ConfirmInput","CancelInput","GameplayAbilityInputs"));
 }
 
 void AFS_PlayerPawn::PossessedBy(AController* NewController)

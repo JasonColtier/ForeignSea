@@ -11,6 +11,9 @@ class UFS_PawnMovementComponent;
 class UCapsuleComponent;
 class UFS_ShootingComponent;
 class UFS_LifeComponent;
+
+
+
 UCLASS()
 class FOREIGNSEA_API AFS_GenericPawn : public APawn
 {

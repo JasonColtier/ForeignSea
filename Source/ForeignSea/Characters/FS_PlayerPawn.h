@@ -16,6 +16,15 @@ class UFS_ShootingComponent;
 class UCapsuleComponent;
 class UCameraComponent;
 class USpringArmComponent;
+
+UENUM()
+enum class GameplayAbilityInputs : uint8
+{
+	UseAbility1,
+	UseAbility2
+};
+
+
 UCLASS()
 class FOREIGNSEA_API AFS_PlayerPawn : public AFS_GenericPawn, public IAbilitySystemInterface
 {

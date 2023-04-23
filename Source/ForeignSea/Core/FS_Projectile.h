@@ -16,12 +16,6 @@ class FOREIGNSEA_API AFS_Projectile : public AActor
 public:
 	// Sets default values for this actor's properties
 	AFS_Projectile();
-
-	/**
-	 * @brief Le pawn qui shoot
-	 */
-	UPROPERTY()
-	AFS_GenericPawn* ShootingPawn;
 	
 	/**
 	 * @brief Mesh of this projectile

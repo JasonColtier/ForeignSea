@@ -63,7 +63,7 @@ void AFS_Projectile::OnBeginOverlap(AActor* SelfActor, AActor* OtherActor)
 	//damage basique
 	FDamageEvent DamageEvent;
 	//on inflige les dégats à l'enemy
-	OtherActor->TakeDamage(BaseDamage,DamageEvent,ShootingPawn->GetController(),ShootingPawn);
+	OtherActor->TakeDamage(BaseDamage,DamageEvent,GetInstigatorController(),this);
 	
 	Destroy();
 }

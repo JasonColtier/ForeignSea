@@ -3,6 +3,7 @@
 
 #include "FS_EnemyPawn.h"
 
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -24,13 +25,10 @@ void AFS_EnemyPawn::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AddMovementInput(GetActorForwardVector(), 1, true);
-
+	
 	if (IsValid(Target))
 	{
-		// FRotator pawnToTarget = UKismetMathLibrary::FindRelativeLookAtRotation(GetActorTransform(),Target->GetActorLocation());
-		// FRotator pawnToTarget = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
-		// SetActorRotation(FRotator(pawnToTarget));
-		// SetActorRelativeRotation(FRotator(0,GetActorRotation().Yaw,0));
+		RotateEnemyTowardTarget();
 	}
 }
 
@@ -38,4 +36,18 @@ void AFS_EnemyPawn::Tick(float DeltaTime)
 void AFS_EnemyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void AFS_EnemyPawn::RotateEnemyTowardTarget()
+{
+	FVector centerToSurface = GetActorLocation();
+	UKismetMathLibrary::Vector_Normalize(centerToSurface);
+
+	FVector actorToTarget = UGameplayStatics::GetPlayerPawn(this,0)->GetActorLocation() - GetActorLocation();
+	UKismetMathLibrary::Vector_Normalize(actorToTarget);
+
+		
+	FRotator rotTowardTarget = UKismetMathLibrary::MakeRotFromZX(centerToSurface,actorToTarget);
+		
+	SetActorRelativeRotation(rotTowardTarget);
 }
