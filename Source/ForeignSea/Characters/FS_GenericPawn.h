@@ -25,7 +25,7 @@ public:
 	// Sets default values for this pawn's properties
 	AFS_GenericPawn();
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	UStaticMeshComponent* Mesh;
 	
 	UPROPERTY(EditAnywhere)

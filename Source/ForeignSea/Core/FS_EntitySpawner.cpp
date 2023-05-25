@@ -21,7 +21,7 @@ AFS_EnemyPawn* AFS_EntitySpawner::SpawnEnemyAroundPlayer()
 	if(!IsValid(PlayerPawn))
 		PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(),0);
 
-	if(!IsValid(PlayerPawn))
+	if(!IsValid(PlayerPawn) ||!IsValid(SphereOnWorld))
 		return nullptr;
 
 	
@@ -61,7 +61,12 @@ void AFS_EntitySpawner::Tick(float DeltaTime)
 	if(TimerSpawnDelay > SpawnDelay)
 	{
 		TimerSpawnDelay = 0;
-		SpawnEnemyAroundPlayer();
+		const auto Enemy = SpawnEnemyAroundPlayer();
+
+		if(IsValid(Enemy))
+		{
+			SpawnedEnemies.Add(Enemy);
+		}
 	}
 }
 

@@ -26,14 +26,6 @@ void UFS_LifeComponent::BeginPlay()
 }
 
 
-// Called every frame
-void UFS_LifeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
 void UFS_LifeComponent::OnOwnerTakeDamage(AActor* DamagedActor, float Damage,const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	TRACE_SCREEN(1,"owner got damaged for %f",Damage);
@@ -42,6 +34,7 @@ void UFS_LifeComponent::OnOwnerTakeDamage(AActor* DamagedActor, float Damage,con
 
 	if(LifeAmount == 0)
 	{
-		GetOwner()->Destroy(); 
+		
+		GetOwner()->SetLifeSpan(0.5);
 	}
 }

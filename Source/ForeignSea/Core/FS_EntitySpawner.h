@@ -46,6 +46,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	AFS_EnemyPawn* SpawnEnemyAroundPlayer();
 
+	UPROPERTY(BlueprintReadOnly)
+	TArray<AFS_EnemyPawn*> SpawnedEnemies;
+
 private:
 	UPROPERTY()
 	float TimerSpawnDelay = 0;

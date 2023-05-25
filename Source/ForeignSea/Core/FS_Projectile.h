@@ -47,6 +47,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float LifeTime = 3;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void ApplyKnockback(AActor* otherActor);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

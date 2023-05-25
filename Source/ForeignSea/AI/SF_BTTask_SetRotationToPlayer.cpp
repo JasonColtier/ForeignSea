@@ -25,8 +25,14 @@ EBTNodeResult::Type USF_BTTask_SetRotationToPlayer::ExecuteTask(UBehaviorTreeCom
 
 	if(!PlayerPawn)
 	PlayerPawn = Cast<AFS_GenericPawn>(MyBlackboard->GetValueAsObject("PlayerPawn"));
+
+	if(IsValid(OwnerPawn) && IsValid(PlayerPawn))
+	{
+		OwnerPawn->LocationToRotateToward = PlayerPawn->GetActorLocation();
+		return EBTNodeResult::Succeeded;
+	}else
+	{
+		return EBTNodeResult::Failed;
+	}
 	
-	OwnerPawn->LocationToRotateToward = PlayerPawn->GetActorLocation();
-	
-	return EBTNodeResult::Succeeded;
 }

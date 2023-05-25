@@ -26,10 +26,8 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+public:
+	
 	UFUNCTION()
 	void OnOwnerTakeDamage(AActor* DamagedActor, float Damage,const UDamageType* DamageType,  AController* InstigatedBy, AActor* DamageCauser);
 	

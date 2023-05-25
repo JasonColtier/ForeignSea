@@ -64,7 +64,9 @@ void AFS_Projectile::OnBeginOverlap(AActor* SelfActor, AActor* OtherActor)
 	FDamageEvent DamageEvent;
 	//on inflige les dégats à l'enemy
 	OtherActor->TakeDamage(BaseDamage,DamageEvent,GetInstigatorController(),this);
+
+	ApplyKnockback(OtherActor);
 	
-	Destroy();
+	// Destroy();
 }
 
