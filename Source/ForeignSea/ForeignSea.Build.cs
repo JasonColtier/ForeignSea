@@ -9,7 +9,7 @@ public class ForeignSea : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "NavigationSystem", 
-			"AIModule", "GameplayTasks", "Blutility","Foliage", "UMG","GameplayAbilities","GameplayTags","GameplayTasks"});
+			"AIModule", "GameplayTasks", "Blutility","Foliage", "UMG","GameplayAbilities","GameplayTags","GameplayTasks","EnhancedInput"});
 
 		
 		PrivateDependencyModuleNames.AddRange(new string[] {"JCO_UE5_Plugin"});

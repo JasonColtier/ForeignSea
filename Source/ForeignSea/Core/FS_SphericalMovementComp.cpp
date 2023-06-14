@@ -33,9 +33,6 @@ void UFS_SphericalMovementComp::TickComponent(float DeltaTime, ELevelTick TickTy
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if(Activate)
-
-
 	if(IsValid(Pawn))
 	{
 		//we get the input from pawn

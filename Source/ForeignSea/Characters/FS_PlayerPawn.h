@@ -6,10 +6,12 @@
 #include "AbilitySystemInterface.h"
 #include "AttributeSet.h"
 #include "FS_GenericPawn.h"
+#include "GameplayTagContainer.h"
 #include "JCOCheatManager.h"
 #include "JcoGameInstanceSubsystem.h"
 #include "FS_PlayerPawn.generated.h"
 
+class UFS_AbilitySystemComponent;
 class UGameplayAbility;
 class UFS_PawnMovementComponent;
 class UFS_ShootingComponent;
@@ -76,14 +78,14 @@ public:
 	//quand on est possessed
 	virtual void PossessedBy(AController* NewController) override;
 
+	void Input_AbilityInputTagPressed(FGameplayTag tag);
+	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	/** Ability System Component. Required to use Gameplay Attributes and Gameplay Abilities. */
 	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite, Category = "Abilities")
-	UAbilitySystemComponent* AbilitySystemComponent;
+	UFS_AbilitySystemComponent* FS_AbilitySystemComponent;
 	
-	UFUNCTION(BlueprintCallable)
-	void GrantAbility(TSubclassOf<UGameplayAbility> AbilityClass,int32 Level,int32 InputCode);
 };
 
 
