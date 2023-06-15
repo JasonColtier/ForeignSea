@@ -11,6 +11,8 @@
 #include "JcoGameInstanceSubsystem.h"
 #include "FS_PlayerPawn.generated.h"
 
+class UFS_InputComponent;
+class UInputMappingContext;
 class UFS_AbilitySystemComponent;
 class UGameplayAbility;
 class UFS_PawnMovementComponent;
@@ -52,15 +54,21 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float TurnSpeed = 10;
+
+	UPROPERTY(EditAnywhere)
+	UInputMappingContext* MappingContext;
 	
 	UPROPERTY()
 	APlayerController* PlayerController;
 
-
+	UPROPERTY()
+	UFS_InputComponent* FS_InputComponent;
 
 	/**  */
 	UPROPERTY(VisibleDefaultsOnly, Category = "Abilities")
 	UAttributeSet* AttributeSet;
+
+
 	
 	UFUNCTION()
 	void MoveForward(float Value);
@@ -78,7 +86,7 @@ public:
 	//quand on est possessed
 	virtual void PossessedBy(AController* NewController) override;
 
-	void Input_AbilityInputTagPressed(FGameplayTag tag);
+
 	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 

@@ -4,6 +4,8 @@
 #include "FS_PlayerPawn.h"
 
 #include "AbilitySystemComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputMappingContext.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "LogTool.h"
@@ -51,16 +53,14 @@ void AFS_PlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	UEnhancedInputLocalPlayerSubsystem* InputSystem = Cast<APlayerController>(GetController())->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	InputSystem->AddMappingContext(MappingContext,0);
+	
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFS_PlayerPawn::MoveForward);
 	PlayerInputComponent->BindAxis("Rotate", this, &AFS_PlayerPawn::Rotate);
-	// PlayerInputComponent->BindAction("Fire", IE_Pressed, ShootingComponent, &UFS_ShootingComponent::StartFiring);
-	// PlayerInputComponent->BindAction("Fire", IE_Released, ShootingComponent, &UFS_ShootingComponent::StopFiring);
-
-	// PlayerInputComponent->BindAction("Ability1",IE_Pressed,FS_AbilitySystemComponent,&UFS_AbilitySystemComponent::Test);
-	// FS_AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent,FGameplayAbilityInputBinds("ConfirmInput","CancelInput","GameplayAbilityInputs"));
-
-	UFS_InputComponent* CustomInputComponent = Cast<UFS_InputComponent>(PlayerInputComponent);
-	CustomInputComponent->BindAbility(this,&ThisClass::Input_AbilityInputTagPressed,&ThisClass::Input_AbilityInputTagPressed,FS_AbilitySystemComponent->InputBindings);
+	
+	FS_InputComponent = Cast<UFS_InputComponent>(PlayerInputComponent);
+	FS_InputComponent->BindAbility(FS_AbilitySystemComponent,&UFS_AbilitySystemComponent::Input_AbilityInputTagPressed,&UFS_AbilitySystemComponent::Input_AbilityInputTagReleased,FS_AbilitySystemComponent->InputBindings);
 }
 
 void AFS_PlayerPawn::PossessedBy(AController* NewController)
@@ -69,11 +69,6 @@ void AFS_PlayerPawn::PossessedBy(AController* NewController)
 
 	PlayerController = Cast<APlayerController>(NewController);
 	FS_AbilitySystemComponent->InitAbilityActorInfo(NewController,this);
-}
-
-void AFS_PlayerPawn::Input_AbilityInputTagPressed(FGameplayTag tag)
-{
-	
 }
 
 UAbilitySystemComponent* AFS_PlayerPawn::GetAbilitySystemComponent() const

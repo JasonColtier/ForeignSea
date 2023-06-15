@@ -22,11 +22,20 @@ void UFS_AbilitySystemComponent::ProcessInput(const float DeltaTime, const bool 
 	//if input pressed !
 	for (auto Ability : HeldAbilities)
 	{
-		TryActivateAbility(Ability);
+		if(TagsInputsPressed.Contains(Ability.Key))
+		{
+			TRACE("active input %s : activating ability ! ",*Ability.Key.GetTagName().ToString());
+			// TRACE("first entry map : %i",TagsInputsPressed.IsEmpty());
+			TryActivateAbility(Ability.Value);
+
+		}
+
+		TRACE("held ability %s",*Ability.Key.GetTagName().ToString());
+		
 	}
 }
 
-void UFS_AbilitySystemComponent::GrantAbility(TSubclassOf<UFS_GameplayAbility> AbilityClass, int32 Level, int32 InputCode)
+void UFS_AbilitySystemComponent::GrantAbility(TSubclassOf<UFS_GameplayAbility> AbilityClass, int32 Level, int32 InputCode,FGameplayTag tag)
 {
 	if(IsValid(AbilityClass))
 	{
@@ -45,11 +54,11 @@ void UFS_AbilitySystemComponent::GrantAbility(TSubclassOf<UFS_GameplayAbility> A
 			switch (Ability->ActivationPolicy)
 			{
 			case HeldInput :
-				HeldAbilities.AddUnique(AbilitySpec.Handle);
+				HeldAbilities.Add(tag,AbilitySpec.Handle);
 				break;
 			case Click :
 				default:
-				ClickedAbilities.AddUnique(AbilitySpec.Handle);
+				ClickedAbilities.Add(tag,AbilitySpec.Handle);
 				break;
 			}
 
@@ -58,15 +67,15 @@ void UFS_AbilitySystemComponent::GrantAbility(TSubclassOf<UFS_GameplayAbility> A
 	}
 }
 
-void UFS_AbilitySystemComponent::AbilityInputTagPressed()
+
+void UFS_AbilitySystemComponent::Input_AbilityInputTagPressed(FGameplayTag tag)
 {
-	//add to pressed array
-	// TRACE_SCREEN(0,"tag pressed !! %s",*Tag.GetTagName().ToString());
+	TagsInputsPressed.AddUnique(tag);
 }
 
-void UFS_AbilitySystemComponent::AbilityInputTagReleased(FGameplayTag Tag)
+void UFS_AbilitySystemComponent::Input_AbilityInputTagReleased(FGameplayTag tag)
 {
-	//remove 
+	TagsInputsPressed.Remove(tag);
 }
 
 

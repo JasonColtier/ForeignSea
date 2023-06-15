@@ -26,7 +26,7 @@ void AFS_PlayerController::PostProcessInput(const float DeltaTime, const bool bG
 {
 	Super::PostProcessInput(DeltaTime, bGamePaused);
 
-	TRACE_SCREEN(0,"Process inputs !");
+	// TRACE_SCREEN(0,"Process inputs !");
 
 	if(IsValid(FS_Pawn) && IsValid(FS_Pawn->GetAbilitySystemComponent()))
 	{

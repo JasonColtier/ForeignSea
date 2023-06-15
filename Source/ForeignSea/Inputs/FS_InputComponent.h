@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "EnhancedInputComponent.h"
 #include "FCustomInputBindingToTag.h"
+#include "LogTool.h"
 #include "FS_InputComponent.generated.h"
 
 
@@ -33,8 +34,10 @@ public:
 			if(PressedFunc)
 				BindAction(Action.Input,ETriggerEvent::Triggered,ObjectClass,PressedFunc,Action.Tag);
 
-			// if(ReleasedFunc)
-			// 	BindAction(Action.Input,ETriggerEvent::Completed,ObjectClass,ReleasedFunc,Action.Tag);
+			if(ReleasedFunc)
+				BindAction(Action.Input,ETriggerEvent::Completed,ObjectClass,ReleasedFunc,Action.Tag);
+
+			UE_LOG(LogBlueprint,Warning,TEXT("binded input %s"),*Action.Tag.GetTagName().ToString());
 		}
 	}
 };

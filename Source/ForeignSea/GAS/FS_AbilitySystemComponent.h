@@ -25,26 +25,25 @@ public:
 	virtual void ProcessInput(const float DeltaTime, const bool bGamePaused);
 
 	UFUNCTION(BlueprintCallable)
-	void GrantAbility(TSubclassOf<UFS_GameplayAbility> AbilityClass,int32 Level,int32 InputCode);
-
-	void AbilityInputTagPressed();
-	void AbilityInputTagReleased(FGameplayTag Tag);
+	void GrantAbility(TSubclassOf<UFS_GameplayAbility> AbilityClass,int32 Level,int32 InputCode,FGameplayTag tag);
 	
+	void Input_AbilityInputTagPressed(FGameplayTag tag);
+	void Input_AbilityInputTagReleased(FGameplayTag tag);
 	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
-
-	// UPROPERTY()
-	// TArray<>
+	
+	UPROPERTY()
+	TArray<FGameplayTag> TagsInputsPressed;
 
 	UPROPERTY()
-	TArray<FGameplayAbilitySpecHandle> HeldAbilities;
+	TMap<FGameplayTag,FGameplayAbilitySpecHandle> HeldAbilities;
 
 	UPROPERTY()
-	TArray<FGameplayAbilitySpecHandle> ClickedAbilities;
+	TMap<FGameplayTag,FGameplayAbilitySpecHandle> ClickedAbilities;
 
 public:
 	// Called every frame
