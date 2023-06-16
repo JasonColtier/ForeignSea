@@ -52,13 +52,15 @@ void AFS_PlayerPawn::Tick(float DeltaTime)
 void AFS_PlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	UEnhancedInputLocalPlayerSubsystem* InputSystem = Cast<APlayerController>(GetController())->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
-	InputSystem->AddMappingContext(MappingContext,0);
 	
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFS_PlayerPawn::MoveForward);
 	PlayerInputComponent->BindAxis("Rotate", this, &AFS_PlayerPawn::Rotate);
-	
+
+	//we add the mapping context of InputActions to our player
+	UEnhancedInputLocalPlayerSubsystem* InputSystem = Cast<APlayerController>(GetController())->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	InputSystem->AddMappingContext(MappingContext,0);
+
+	//we bind the ability pressed to our AbilitySystemComponent
 	FS_InputComponent = Cast<UFS_InputComponent>(PlayerInputComponent);
 	FS_InputComponent->BindAbility(FS_AbilitySystemComponent,&UFS_AbilitySystemComponent::Input_AbilityInputTagPressed,&UFS_AbilitySystemComponent::Input_AbilityInputTagReleased,FS_AbilitySystemComponent->InputBindings);
 }

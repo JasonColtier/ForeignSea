@@ -25,14 +25,12 @@ void AFS_PlayerController::BeginPlay()
 void AFS_PlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
 {
 	Super::PostProcessInput(DeltaTime, bGamePaused);
-
-	// TRACE_SCREEN(0,"Process inputs !");
-
+	
+	//we send the process input call to the ability system so that it can handle the activation of abilities
 	if(IsValid(FS_Pawn) && IsValid(FS_Pawn->GetAbilitySystemComponent()))
 	{
 		AbilitySystemComponent->ProcessInput(DeltaTime,bGamePaused);
 	}
-
 }
 
 void AFS_PlayerController::OnPossess(APawn* InPawn)

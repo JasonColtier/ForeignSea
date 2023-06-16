@@ -19,19 +19,21 @@ UFS_AbilitySystemComponent::UFS_AbilitySystemComponent()
 
 void UFS_AbilitySystemComponent::ProcessInput(const float DeltaTime, const bool bGamePaused)
 {
-	//if input pressed !
+
+	/*
+	if (FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(SpecHandle))
+	*/
+	
+	//i'm looking for all the abilities that should activate when held
 	for (auto Ability : HeldAbilities)
 	{
+		//if it matches the specific ability tag that is pressed this frame
 		if(TagsInputsPressed.Contains(Ability.Key))
 		{
-			TRACE("active input %s : activating ability ! ",*Ability.Key.GetTagName().ToString());
-			// TRACE("first entry map : %i",TagsInputsPressed.IsEmpty());
+			//we try to activate it. 
 			TryActivateAbility(Ability.Value);
-
+			// TRACE("active input %s : activating ability ! ",*Ability.Key.GetTagName().ToString());
 		}
-
-		TRACE("held ability %s",*Ability.Key.GetTagName().ToString());
-		
 	}
 }
 

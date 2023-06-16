@@ -26,6 +26,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	//nice templated function allowing to bind InputAction to a function
 	template<class UserClass,typename PressedFuncType,typename ReleasedFuncType>
 	void BindAbility(UserClass* ObjectClass,PressedFuncType PressedFunc,ReleasedFuncType ReleasedFunc,const TArray<FCustomInputBindingToTag>& CustomInputBindingToTags)
 	{
