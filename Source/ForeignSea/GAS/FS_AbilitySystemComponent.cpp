@@ -32,7 +32,7 @@ void UFS_AbilitySystemComponent::ProcessInput(const float DeltaTime, const bool 
 		{
 			//we try to activate it. 
 			TryActivateAbility(Ability.Value);
-			// TRACE("active input %s : activating ability ! ",*Ability.Key.GetTagName().ToString());
+			TRACE("active input %s : activating ability ! ",*Ability.Key.GetTagName().ToString());
 		}
 	}
 }

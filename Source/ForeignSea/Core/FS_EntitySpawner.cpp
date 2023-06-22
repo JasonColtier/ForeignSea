@@ -21,7 +21,7 @@ AFS_EnemyPawn* AFS_EntitySpawner::SpawnEnemyAroundPlayer()
 	if(!IsValid(PlayerPawn))
 		PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(),0);
 
-	if(!IsValid(PlayerPawn) ||!IsValid(SphereOnWorld))
+	if(!IsValid(PlayerPawn) ||!IsValid(SphereOnWorld) || !IsValid(EnemySpawnedClass))
 		return nullptr;
 
 	
