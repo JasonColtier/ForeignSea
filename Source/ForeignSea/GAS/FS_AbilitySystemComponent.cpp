@@ -18,7 +18,7 @@ UFS_AbilitySystemComponent::UFS_AbilitySystemComponent()
 }
 
 void UFS_AbilitySystemComponent::ProcessInput(const float DeltaTime, const bool bGamePaused)
-{
+{ 
 
 	/*
 	if (FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(SpecHandle))
