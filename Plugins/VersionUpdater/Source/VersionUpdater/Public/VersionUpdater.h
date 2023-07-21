@@ -2,10 +2,10 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-
-class FJCO_UE5_PluginModule : public IModuleInterface
+class FVersionUpdaterModule : public IModuleInterface
 {
 public:
 

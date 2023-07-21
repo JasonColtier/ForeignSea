@@ -4,6 +4,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 #include "CoreMinimal.h"
 DECLARE_LOG_CATEGORY_EXTERN(FS_Log, Log, All);
+inline DEFINE_LOG_CATEGORY(FS_Log);
+
 
 #if _MSC_VER
 #define FUNC_NAME    *FString(__func__)

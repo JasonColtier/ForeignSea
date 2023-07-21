@@ -1,23 +1,20 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "JCO_UE5_Plugin.h"
+#include "VersionUpdater.h"
 
-#define LOCTEXT_NAMESPACE "FJCO_UE5_PluginModule"
+#define LOCTEXT_NAMESPACE "FVersionUpdaterModule"
 
-
-void FJCO_UE5_PluginModule::StartupModule()
+void FVersionUpdaterModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-	
 }
 
-void FJCO_UE5_PluginModule::ShutdownModule()
+void FVersionUpdaterModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
-	
 }
 
 #undef LOCTEXT_NAMESPACE
 	
-IMPLEMENT_MODULE(FJCO_UE5_PluginModule, JCO_UE5_Plugin)
+IMPLEMENT_MODULE(FVersionUpdaterModule, VersionUpdater)
