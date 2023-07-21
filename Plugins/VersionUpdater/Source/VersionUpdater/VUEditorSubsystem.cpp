@@ -42,7 +42,7 @@ void UVUEditorSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 		if (SourceControlProvider && SourceControlProvider->IsEnabled())
 		{
-			FString fileVersion = "Game/Config/DefaultGame.ini";
+			FString fileVersion = FPaths::ProjectConfigDir()+"/DefaultGame.ini";
 			auto file = SourceControlProvider->GetState(fileVersion, EStateCacheUsage::ForceUpdate);
 			check(file && "file not found");
 
