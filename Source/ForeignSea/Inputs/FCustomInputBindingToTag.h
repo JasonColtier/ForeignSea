@@ -16,8 +16,8 @@ struct FCustomInputBindingToTag
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
-	FGameplayTag Tag;
+	FGameplayTag Tag = FGameplayTag::EmptyTag;
 
 	UPROPERTY(EditAnywhere)
-	UInputAction* Input;
+	UInputAction* Input = nullptr;
 };
